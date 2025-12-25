@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Aventura en el Reino JS</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script type="module" src="main.js"></script>
 </head>
+
 <body>
-    
+
+    <div class="contenedor-juego">
+        <h1>⚔️ Aventura en el Reino JS ⚔️</h1>
+
+        <section id="escena-registro" class="escena activa">
+            <h2>Tu Personaje</h2>
+            <div id="tarjeta-jugador-inicial" class="tarjeta-centro">
+                <form id="form-registro">
+                    <label>Nombre: <input type="text" id="reg-nombre" placeholder="Ej: Diego"></label><br>
+                    <p>Tienes 10 puntos para repartir:</p>
+                    <label>Ataque: <input type="number" id="reg-ataque" value="0" min="0"></label><br>
+                    <label>Defensa: <input type="number" id="reg-defensa" value="0" min="0"></label><br>
+                    <label>Vida (Base 100): <input type="number" id="reg-vida" value="100" min="100"></label><br>
+
+                </form>
+            </div>
+            <button id="btn-ir-jugador" class="btn-primario">Continuar</button>
+        </section>
+
+    </div>
+
 </body>
+
 </html>

@@ -1,0 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.escena {
+    display: none; 
+}
+
+.escena.activa {
+    display: block; 
+}
