@@ -1,3 +1,4 @@
+import { showScene } from './utils/escenas.js';
 import { Jugador } from './modules/jugadores.js';
 import { REGEX_NOMBRE } from './utils/regex.js';
 
@@ -38,6 +39,24 @@ function validarYCrearJugador() {
     
     jugador = new Jugador(nombre, ataque, defensa, vida);
     
-    
+    cargarEscenaResumenJugador();
 }
 
+function cargarEscenaResumenJugador() {
+    const container = document.getElementById('contenedor-resumen');
+    
+    container.innerHTML = `
+        <div class="tarjeta-datos">
+            <h3>Héroe: ${jugador.nombre}</h3>
+            <p>❤️ Vida Base: ${jugador.vidaMax}</p>
+            <p>⚔️ Ataque Base: ${jugador.ataqueBase}</p>
+            <p>🛡️ Defensa Base: ${jugador.defensaBase}</p>
+            <p>💰 Oro inicial: ${(jugador.dinero / 100).toFixed(2)}€</p>
+        </div>
+    `;
+
+   
+    showScene('escena-jugador');
+
+    document.getElementById('btn-ir-mercado-fijo').onclick = cargarEscenaMercado;
+}
