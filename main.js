@@ -1,9 +1,11 @@
 import { showScene } from './utils/escenas.js';
 import { Jugador } from './modules/jugadores.js';
 import { REGEX_NOMBRE } from './utils/regex.js';
+import { aplicarDescuentoPorRareza, obtenerRarezaAleatoria } from './modules/mercado.js';
 
 
 let jugador;
+let cesta = [];
 
 
 window.onload = () => {
@@ -59,4 +61,80 @@ function cargarEscenaResumenJugador() {
     showScene('escena-jugador');
 
     document.getElementById('btn-ir-mercado-fijo').onclick = cargarEscenaMercado;
+}
+
+
+function cargarEscenaMercado() {
+    const escaparate = document.getElementById('contenedor-productos');
+    escaparate.innerHTML = ""; 
+
+    const productosEnVenta = aplicarDescuentoPorRareza(obtenerRarezaAleatoria(), 10);
+
+    productosEnVenta.forEach(objeto => {
+        const tarjeta = document.createElement('div');
+        tarjeta.className = 'tarjeta-producto';
+
+        
+        tarjeta.innerHTML = `
+            <p>${objeto.mostrarProducto()}</p>
+            <button class="boton-accion">Añadir</button>
+        `;
+
+        
+        const boton = tarjeta.querySelector('.boton-accion');
+        
+        boton.onclick = () => gestionarCesta(objeto, tarjeta, boton);
+
+        escaparate.appendChild(tarjeta);
+    });
+
+    showScene('escena-mercado');
+
+    document.getElementById('btn-confirmar-compra').onclick = () => confirmarCompra();
+}
+
+
+function gestionarCesta(producto, tarjetaVisual, elBoton) {
+    
+    const yaLoTengo = cesta.includes(producto);
+
+    if (yaLoTengo === false) {
+        
+        if (jugador.dinero >= producto.precio) {
+            cesta.push(producto);               
+            jugador.dinero -= producto.precio;  
+            
+            tarjetaVisual.style.backgroundColor = "orange"; 
+            elBoton.innerText = "Retirar";      
+        } else {
+            alert("¡No tienes oro suficiente!");
+        }
+    } 
+    else {
+       
+        cesta = cesta.filter(item => item !== producto);
+        
+        jugador.dinero += producto.precio;    
+        tarjetaVisual.style.backgroundColor = ""; 
+        elBoton.innerText = "Añadir";         
+    }
+
+    
+    document.getElementById('oro-disponible').innerText = (jugador.dinero / 100).toFixed(2);
+}
+
+
+function confirmarCompra() {
+    if (cesta.length === 0) {
+        alert("No has seleccionado ningún objeto.");
+    }
+    
+    for (let i = 0; i < cesta.length; i++) {
+        jugador.añadirItem(cesta[i]);
+    }
+    
+    cesta = []; 
+    alert("¡Compra confirmada! Tu inventario ha sido actualizado.");
+    
+    cargarEscenaEnemigos();
 }
