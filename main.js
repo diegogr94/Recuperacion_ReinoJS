@@ -2,6 +2,7 @@ import { showScene } from './utils/escenas.js';
 import { Jugador } from './modules/jugadores.js';
 import { REGEX_NOMBRE } from './utils/regex.js';
 import { aplicarDescuentoPorRareza, obtenerRarezaAleatoria } from './modules/mercado.js';
+import { Enemigo, JefeFinal } from './modules/enemigos.js';
 
 
 let jugador;
@@ -138,3 +139,36 @@ function confirmarCompra() {
     
     cargarEscenaEnemigos();
 }
+
+
+function cargarEscenaEnemigos() {
+    
+    const contenedor = document.getElementById('contenedor-enemigos');
+    
+    contenedor.innerHTML = ""; 
+
+    const listaEnemigos = [
+        new Enemigo("Troll", 12, 50),
+        new Enemigo("Minotauro", 15, 60),
+        new JefeFinal("Brujo", 25, 120, "Fuego de Eventos", 1.5)
+    ];
+
+    
+    listaEnemigos.forEach(enemigo => {
+        const div = document.createElement('div');
+        
+        div.className = "tarjeta-enemigo " + enemigo.tipo; 
+        
+        div.innerHTML = "<p>" + enemigo.mostrarEnemigo() + "</p>";
+        
+        contenedor.appendChild(div);
+    });
+
+    showScene('escena-enemigos');
+}
+
+    
+    document.getElementById('btn-comenzar-combate').onclick = () => {
+        alert("¡El combate va a empezar!");
+        
+    };
