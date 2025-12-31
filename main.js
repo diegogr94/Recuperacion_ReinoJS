@@ -3,10 +3,13 @@ import { Jugador } from './modules/jugadores.js';
 import { REGEX_NOMBRE } from './utils/regex.js';
 import { aplicarDescuentoPorRareza, obtenerRarezaAleatoria } from './modules/mercado.js';
 import { Enemigo, JefeFinal } from './modules/enemigos.js';
+import { batalla } from './modules/ranking.js';
 
 
 let jugador;
 let cesta = [];
+let enemigosBatalla = []; 
+let indiceCombate = 0;
 
 
 window.onload = () => {
@@ -147,14 +150,14 @@ function cargarEscenaEnemigos() {
     
     contenedor.innerHTML = ""; 
 
-    const listaEnemigos = [
-        new Enemigo("Troll", 12, 50),
-        new Enemigo("Minotauro", 15, 60),
-        new JefeFinal("Brujo", 25, 120, "Fuego de Eventos", 1.5)
+    enemigosBatalla = [
+        new Enemigo("Troll", 1, 5),
+        new Enemigo("Minotauro", 1, 6),
+        new JefeFinal("Brujo", 2, 1, "Fuego de Eventos", 1.5)
     ];
 
     
-    listaEnemigos.forEach(enemigo => {
+    enemigosBatalla.forEach(enemigo => {
         const div = document.createElement('div');
         
         div.className = "tarjeta-enemigo " + enemigo.tipo; 
@@ -165,10 +168,56 @@ function cargarEscenaEnemigos() {
     });
 
     showScene('escena-enemigos');
-}
 
-    
     document.getElementById('btn-comenzar-combate').onclick = () => {
         alert("¡El combate va a empezar!");
-        
+        indiceCombate = 0; 
+        ejecutarDueloSecuencial();
     };
+}
+
+    function ejecutarDueloSecuencial() {
+    const rivalActual = enemigosBatalla[indiceCombate];
+    batalla(jugador, rivalActual);
+    const combateFinalizadoOk = jugador.vida > 0;
+
+    document.getElementById('tarjeta-jugador-batalla').innerHTML = 
+        '<h3>' + jugador.nombre + '</h3>' +
+        '<p>❤️ Vida: ' + jugador.vida + '</p>' +
+        '<p>⚔️ Daño: ' + jugador.ataqueTotal + '</p>';
+
+    document.getElementById('tarjeta-enemigo-batalla').innerHTML = 
+        '<h3>' + rivalActual.nombre + '</h3>' +
+        '<p>❤️ Vida: ' + (rivalActual.vida <= 0 ? 0 : rivalActual.vida) + '</p>';
+
+    const areaTexto = document.getElementById('registro-batalla');
+    const botonProximo = document.getElementById('btn-siguiente-batalla');
+
+    if (combateFinalizadoOk) {
+        areaTexto.innerHTML = '<h3>¡Has vencido!</h3><p>El ' + rivalActual.nombre + ' ha sido derrotado.</p>';
+        if (indiceCombate < enemigosBatalla.length - 1) {
+            botonProximo.innerText = "Próximo Rival";
+        } else {
+            botonProximo.innerText = "Ver Clasificación Final";
+        }
+    } else {
+        areaTexto.innerHTML = '<h3>GAME OVER</h3>';
+        botonProximo.innerText = "Reintentar";
+    }
+
+    showScene('escena-batalla');
+    botonProximo.classList.remove('oculto');
+
+    botonProximo.onclick = () => {
+        if (!combateFinalizadoOk) {
+            location.reload();
+        } else if (indiceCombate < enemigosBatalla.length - 1) {
+            indiceCombate++;
+            botonProximo.classList.add('oculto');
+            ejecutarDueloSecuencial();
+        } else {
+            
+            mostrarRankingFinal();
+        }
+    };
+}
