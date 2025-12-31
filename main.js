@@ -217,7 +217,33 @@ function cargarEscenaEnemigos() {
             ejecutarDueloSecuencial();
         } else {
             
-            mostrarRankingFinal();
+            mostrarCalificacion();
         }
     };
+}
+
+function mostrarCalificacion() {
+    const esSuperior = jugador.puntos >= 200; 
+    const calificacion = esSuperior ? '🥇 PRO' : '🥉 ROOKIE';
+    
+    const datosPartida = {
+        idNombre: jugador.nombre,
+        idPuntos: jugador.puntos,
+        idFecha: new Date().toLocaleDateString()
+    };
+    let almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
+    almacen.push(datosPartida);
+    localStorage.setItem('ranking_final', JSON.stringify(almacen));
+
+    const zonaRango = document.getElementById('contenedorProRookie');
+    zonaRango.innerHTML = '<h2>Resultado Final</h2>' +
+                          '<div class="caja-registro">' +
+                          '<h3>Nivel obtenido: ' + calificacion + '</h3>' +
+                          '<p>Puntuación total: ' + jugador.puntos + '</p>' +
+                          '</div>' +
+                          '<button id="btn-ir-ranking" class="btn-primario">Ver Clasificación</button>';
+
+    showScene('escena-ProRookie');
+
+    document.getElementById('btn-ir-ranking').onclick = mostrarRankingHistorico;
 }
