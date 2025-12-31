@@ -229,7 +229,9 @@ function mostrarCalificacion() {
     const datosPartida = {
         idNombre: jugador.nombre,
         idPuntos: jugador.puntos,
+        idDinero: jugador.dinero,
         idFecha: new Date().toLocaleDateString()
+        
     };
     let almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
     almacen.push(datosPartida);
@@ -246,4 +248,29 @@ function mostrarCalificacion() {
     showScene('escena-ProRookie');
 
     document.getElementById('btn-ir-ranking').onclick = mostrarRankingHistorico;
+}
+
+
+function mostrarRankingHistorico() {
+    const almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
+    const zonaTabla = document.getElementById('contenedor-TablaFinal');
+    
+    let tablaHtml = '<h2>Historial de Partidas</h2>' +
+                    '<table border="1" style="width:100%; margin-top:20px; background:white; color:black; text-align:center;">' +
+                    '<thead><tr><th>Héroe</th><th>Puntos</th><th>Dinero</th></tr></thead>' +
+                    '<tbody>';
+
+    almacen.forEach(reg => {
+        tablaHtml += '<tr>' +
+                     '<td>' + reg.idNombre + '</td>' +
+                     '<td>' + reg.idPuntos + '</td>' +
+                     '<td>' + reg.idDinero + '</td>' +
+                     '</tr>';
+    });
+
+    tablaHtml += '</tbody></table>' +
+                 '<br><button class="btn-primario" onclick="location.reload()">Reiniciar Juego</button>';
+
+    zonaTabla.innerHTML = tablaHtml;
+    showScene('escena-ranking');
 }
