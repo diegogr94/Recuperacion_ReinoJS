@@ -165,6 +165,16 @@ function confirmarCompra() {
 }
 
 
+function obtenerImagenEnemigo(nombre) {
+    const mapaEnemigos = {
+        'Troll': './imagenes/troll.png',
+        'Minotauro': './imagenes/minotauro.png',
+        'Mago': './imagenes/mago.png'
+    };
+    return mapaEnemigos[nombre] || './imagenes/enemigo_generico.jpg';
+}
+
+
 function cargarEscenaEnemigos() {
     
     const contenedor = document.getElementById('contenedor-enemigos');
@@ -174,7 +184,7 @@ function cargarEscenaEnemigos() {
     enemigosBatalla = [
         new Enemigo("Troll", 1, 5),
         new Enemigo("Minotauro", 1, 6),
-        new JefeFinal("Brujo", 2, 1, "Fuego de Eventos", 1.5)
+        new JefeFinal("Mago", 2, 1, "Fuego de Eventos", 1.5)
     ];
 
     
@@ -182,8 +192,15 @@ function cargarEscenaEnemigos() {
         const div = document.createElement('div');
         
         div.className = "tarjeta-enemigo " + enemigo.tipo; 
+
+        const rutaImg = obtenerImagenEnemigo(enemigo.nombre);
         
-        div.innerHTML = "<p>" + enemigo.mostrarEnemigo() + "</p>";
+        div.innerHTML = 
+            '<img src="' + rutaImg + '" alt="' + enemigo.nombre + '" class="img-enemigo">' +
+            '<div class="info-enemigo">' +
+                '<p>' + enemigo.nombre + '</p>' +
+                '<p>' + enemigo.ataque + ' puntos de ataque</p>' +
+            '</div>';
         
         contenedor.appendChild(div);
     });
