@@ -221,7 +221,7 @@ function cargarEscenaEnemigos() {
 
 
     document.getElementById('tarjeta-jugador-batalla').innerHTML = 
-        '<img src="./imagenes/tu-imagen-guerrero.jpg" class="img-duelo">' +
+        '<img src="./imagenes/caballero.png" class="img-duelo">' +
         '<h3>' + jugador.nombre + '</h3>' +
         '<p>❤️ Vida: ' + jugador.vida + '</p>';
 
