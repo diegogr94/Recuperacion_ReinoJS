@@ -10,3 +10,87 @@
 .escena.activa {
     display: block; 
 }
+
+
+body {
+    background-color: #d2b48c; 
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    background-color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.escena.activa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#form-registro {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.campo label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.campo input {
+    padding: 8px;
+    border: 1px solid #999;
+    background-color: #e8f0fe;
+    border-radius: 2px;
+}
+
+.btn-primario {
+    background-color: #0c6e2b; 
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+
+footer {
+    background-color: #4a331a; 
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+
+#contenedor-inventario {
+    display: flex;
+    gap: 10px;
+}
+
+.espacio-inventario {
+    width: 60px;
+    height: 60px;
+    background-color: #d2b48c;
+    border: 3px solid #2a1a0a;
+    border-radius: 4px;
+}

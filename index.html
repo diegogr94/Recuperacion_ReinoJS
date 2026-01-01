@@ -15,82 +15,113 @@
 
 <body>
 
-    <div class="contenedor-juego">
-        <h1>⚔️ Aventura en el Reino JS ⚔️</h1>
+    <header>
+        <h1 id="title">Aventura en el Reino de JS</h1>
+    </header>
 
+
+    <main>
+        <div class="contenedor-juego">
+       
         <section id="escena-registro" class="escena activa">
-            <h2>Tu Personaje</h2>
             <div id="tarjeta-jugador-inicial" class="tarjeta-centro">
                 <form id="form-registro">
-                    <label>Nombre: <input type="text" id="reg-nombre" placeholder="Ej: Diego"></label><br>
-                    <p>Tienes 10 puntos para repartir:</p>
-                    <label>Ataque: <input type="number" id="reg-ataque" value="0" min="0"></label><br>
-                    <label>Defensa: <input type="number" id="reg-defensa" value="0" min="0"></label><br>
-                    <label>Vida (Base 100): <input type="number" id="reg-vida" value="100" min="100"></label><br>
-
+                    <div class="campo">
+                        <label>Nombre</label>
+                        <input type="text" id="reg-nombre" placeholder="Ej. Diego">
+                    </div>
+                    <div class="campo">
+                        <label>Ataque</label>
+                        <input type="number" id="reg-ataque" value="0" min="0">
+                    </div>
+                    <div class="campo">
+                        <label>Defensa</label>
+                        <input type="number" id="reg-defensa" value="0" min="0">
+                    </div>
+                    <div class="campo">
+                        <label>Vida</label>
+                        <input type="number" id="reg-vida" value="100">
+                    </div>
                 </form>
             </div>
             <button id="btn-ir-jugador" class="btn-primario">Continuar</button>
         </section>
-
-
-        <section id="escena-jugador" class="escena">
-            <h2>Resumen del Héroe</h2>
-            <div id="contenedor-resumen">
-            </div>
-            <button id="btn-ir-mercado-fijo" class="btn-primario">Ir al Mercado</button>
-        </section>
-
-
-        <section id="escena-mercado" class="escena">
-    <h2>Mercado Negro</h2>
-    <div class="info-oro">Dinero: <span id="oro-disponible">0.00</span>€</div>
-    
-    <div id="contenedor-productos" class="grid-productos">
+        
         </div>
-    
-    <button id="btn-confirmar-compra" class="btn-primario">Finalizar Compra</button>
-</section>
+            
 
 
-<section id="escena-enemigos" class="escena">
-    <h2>Enemigos en tu camino</h2>
-    
-    <div id="contenedor-enemigos" class="grid-enemigos">
+            <section id="escena-jugador" class="escena">
+                <h2>Resumen del Héroe</h2>
+                <div id="contenedor-resumen">
+                </div>
+                <button id="btn-ir-mercado-fijo" class="btn-primario">Ir al Mercado</button>
+            </section>
+
+
+            <section id="escena-mercado" class="escena">
+                <h2>Mercado Negro</h2>
+                <div class="info-oro">Dinero: <span id="oro-disponible">0.00</span>€</div>
+
+                <div id="contenedor-productos" class="grid-productos">
+                </div>
+
+                <button id="btn-confirmar-compra" class="btn-primario">Finalizar Compra</button>
+            </section>
+
+
+            <section id="escena-enemigos" class="escena">
+                <h2>Enemigos en tu camino</h2>
+
+                <div id="contenedor-enemigos" class="grid-enemigos">
+                </div>
+
+                <button id="btn-comenzar-combate" class="btn-primario">¡A la Batalla!</button>
+            </section>
+
+
+            <section id="escena-batalla" class="escena">
+                <h2>Campo de Batalla</h2>
+
+                <div class="arena-batalla">
+
+                    <div id="tarjeta-jugador-batalla" class="tarjeta-luchador"></div>
+
+                    <div class="texto-vs">VS</div>
+
+                    <div id="tarjeta-enemigo-batalla" class="tarjeta-luchador"></div>
+                </div>
+
+                <div id="registro-batalla" class="caja-registro"></div>
+
+                <button id="btn-siguiente-batalla" class="btn-primario oculto">Siguiente Batalla</button>
+            </section>
+
+            <section id="escena-ProRookie" class="escena">
+                <div id="contenedorProRookie"></div>
+            </section>
+
+
+            <section id="escena-ranking" class="escena">
+                <div id="contenedor-TablaFinal"></div>
+            </section>
+
+
         </div>
-
-    <button id="btn-comenzar-combate" class="btn-primario">¡A la Batalla!</button>
-</section>
+    </main>
 
 
-<section id="escena-batalla" class="escena">
-            <h2>Campo de Batalla</h2>
-            
-            <div class="arena-batalla">
-                
-                <div id="tarjeta-jugador-batalla" class="tarjeta-luchador"></div>
-                
-                <div class="texto-vs">VS</div>
-                
-                <div id="tarjeta-enemigo-batalla" class="tarjeta-luchador"></div>
-            </div>
+    <footer>
+        <div id="contenedor-inventario">
+            <div class="espacio-inventario"></div>
+            <div class="espacio-inventario"></div>
+            <div class="espacio-inventario"></div>
+            <div class="espacio-inventario"></div>
+            <div class="espacio-inventario"></div>
+            <div class="espacio-inventario"></div>
+        </div>
+    </footer>
 
-            <div id="registro-batalla" class="caja-registro"></div>
-            
-            <button id="btn-siguiente-batalla" class="btn-primario oculto">Siguiente Batalla</button>
-        </section>
-
-<section id="escena-ProRookie" class="escena">
-    <div id="contenedorProRookie"></div>
-</section>
-
-
-<section id="escena-ranking" class="escena">
-    <div id="contenedor-TablaFinal"></div>
-</section>
-
-
-    </div>
 
 </body>
 
