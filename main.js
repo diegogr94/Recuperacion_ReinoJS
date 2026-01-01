@@ -49,21 +49,20 @@ function validarYCrearJugador() {
 }
 
 function cargarEscenaResumenJugador() {
+    
+    document.getElementById('mostrarNombre').innerText = jugador.nombre;
+
+    
     const container = document.getElementById('contenedor-resumen');
     
-    container.innerHTML = `
-        <div class="tarjeta-datos">
-            <h3>Héroe: ${jugador.nombre}</h3>
-            <p>❤️ Vida Base: ${jugador.vidaMax}</p>
-            <p>⚔️ Ataque Base: ${jugador.ataqueBase}</p>
-            <p>🛡️ Defensa Base: ${jugador.defensaBase}</p>
-            <p>💰 Oro inicial: ${(jugador.dinero / 100).toFixed(2)}€</p>
-        </div>
-    `;
+    
+    container.innerHTML = 
+        '<div class="stat-card">Ataque: ' + jugador.ataqueBase + '</div>' +
+        '<div class="stat-card">Defensa: ' + jugador.defensaBase + '</div>' +
+        '<div class="stat-card">Vida: ' + jugador.vidaMax + '</div>' +
+        '<div class="stat-card">Puntos: ' + jugador.puntos + '</div>';
 
-   
     showScene('escena-jugador');
-
     document.getElementById('btn-ir-mercado-fijo').onclick = cargarEscenaMercado;
 }
 
