@@ -67,6 +67,25 @@ function cargarEscenaResumenJugador() {
 }
 
 
+function obtenerImagenProducto(nombre) {
+    
+const mapaImagenes = {
+        'Espada corta':       './imagenes/espadaCorta.jpg',
+        'Arco de caza':       './imagenes/arcoCaza.jpg',
+        'Armadura de cuero':  './imagenes/armaduraCuero.jpg',
+        'Poción pequeña':     './imagenes/pocionPeque.jpg',
+        'Espada rúnica':      './imagenes/espadaRunica.jpg',
+        'Escudo de roble':    './imagenes/escudoRoble.jpg',
+        'Poción grande':      './imagenes/pocionGrande.jpg',
+        'Mandoble épico':     './imagenes/mandobleEpico.jpg',
+        'Placas dracónicas':  './imagenes/placasDraconicas.jpg',
+        'Elixir legendario':  './imagenes/elixirLegendario.jpg'
+    };
+    
+    
+    return mapaImagenes[nombre] || './imagenes/espadaCorta.jpg'; 
+}
+
 function cargarEscenaMercado() {
     const escaparate = document.getElementById('contenedor-productos');
     escaparate.innerHTML = ""; 
@@ -77,25 +96,28 @@ function cargarEscenaMercado() {
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-producto';
 
-        
-        tarjeta.innerHTML = `
-            <p>${objeto.mostrarProducto()}</p>
-            <button class="boton-accion">Añadir</button>
-        `;
+        const rutaImagen = obtenerImagenProducto(objeto.nombre);
 
-        
+       
+        tarjeta.innerHTML = 
+            '<img src="' + rutaImagen + '" alt="' + objeto.nombre + '" class="img-producto">' +
+            '<div class="info-producto">' +
+                '<p><strong>' + objeto.nombre + '</strong></p>' +
+                '<p>' + objeto.mostrarProducto() + '</p>' +
+            '</div>' +
+            '<button class="boton-accion">Añadir</button>';
+
         const boton = tarjeta.querySelector('.boton-accion');
-        
-        boton.onclick = () => gestionarCesta(objeto, tarjeta, boton);
+        boton.onclick = function() {
+            gestionarCesta(objeto, tarjeta, boton);
+        };
 
         escaparate.appendChild(tarjeta);
     });
 
     showScene('escena-mercado');
-
-    document.getElementById('btn-confirmar-compra').onclick = () => confirmarCompra();
+    document.getElementById('btn-confirmar-compra').onclick = confirmarCompra;
 }
-
 
 function gestionarCesta(producto, tarjetaVisual, elBoton) {
     

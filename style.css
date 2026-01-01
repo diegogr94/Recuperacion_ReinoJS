@@ -1,54 +1,74 @@
-*{
+
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
-
-.escena {
-    display: none; 
-}
-
-.escena.activa {
-    display: block; 
-}
-
 
 body {
     background-color: #d2b48c; 
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100vh; 
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden; 
+}
+
+
+header, footer {
+    flex-shrink: 0; 
+    z-index: 10;
 }
 
 header {
     background-color: white;
     padding: 20px;
     text-align: center;
+    border-bottom: 2px solid #4a331a;
 }
 
-main {
-    flex-grow: 1;
+footer {
+    background-color: #4a331a; 
+    padding: 20px;
     display: flex;
     justify-content: center;
-    align-items: center;
+}
+
+
+main {
+    flex-grow: 1; 
+    overflow: hidden; 
+    display: flex;
+    justify-content: center;
+}
+
+.contenedor-juego {
+    width: 100%;
+    height: 100%;
+}
+
+.escena {
+    display: none !important; 
+    width: 100%;
+    height: 100%;
 }
 
 .escena.activa {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: block !important; 
 }
+
 
 #form-registro {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    width: 300px;
+    margin: 40px auto; 
 }
 
 .campo {
     display: flex;
     flex-direction: column;
-    width: 300px;
 }
 
 .campo label {
@@ -62,43 +82,6 @@ main {
     background-color: #e8f0fe;
     border-radius: 2px;
 }
-
-.btn-primario {
-    background-color: #0c6e2b; 
-    border: none;
-    padding: 10px 25px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 40px;
-}
-
-
-footer {
-    background-color: #4a331a; 
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-}
-
-
-#contenedor-inventario {
-    display: flex;
-    gap: 10px;
-}
-
-.espacio-inventario {
-    width: 60px;
-    height: 60px;
-    background-color: #d2b48c;
-    border: 3px solid #2a1a0a;
-    border-radius: 4px;
-}
-
-
-
-
-
 
 
 .info-superior-heroe {
@@ -120,20 +103,88 @@ footer {
     color: #000;
 }
 
-
 .grid-estadisticas {
     display: grid;
     grid-template-columns: 1fr 1fr; 
-    gap: 10px;
+    gap: 15px;
     width: 80%;
-    margin-top: 20px;
+    max-width: 800px;
+    margin: 20px auto; /* Centrado manual */
 }
 
 .stat-card {
     background-color: #d2b48c; 
-    padding: 40px 20px;
+    padding: 20px; 
     text-align: center;
     font-weight: bold;
     font-size: 1.4rem;
     border: 1px solid rgba(0,0,0,0.1);
+}
+
+
+#escena-mercado.activa {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+}
+
+.grid-productos {
+    width: 100%;
+    flex-grow: 1; 
+    overflow-y: auto; 
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.tarjeta-producto {
+    background-color: white;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid #5d4037;
+}
+
+.img-producto {
+    width: 120px;
+    height: 120px;
+    object-fit: contain;
+}
+
+
+.btn-primario {
+    display: block;
+    margin: 20px auto;
+    background-color: #0c6e2b; 
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.btn-primario:hover {
+    background-color: #0a5a23;
+}
+
+#contenedor-inventario {
+    display: flex;
+    gap: 10px;
+}
+
+.espacio-inventario {
+    width: 60px;
+    height: 60px;
+    background-color: #d2b48c;
+    border: 3px solid #2a1a0a;
+    border-radius: 4px;
+}
+
+.oculto {
+    display: none !important;
 }
