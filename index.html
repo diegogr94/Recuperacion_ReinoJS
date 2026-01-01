@@ -87,21 +87,26 @@
 
 
             <section id="escena-batalla" class="escena">
-                <h2>Campo de Batalla</h2>
-
-                <div class="arena-batalla">
-
-                    <div id="tarjeta-jugador-batalla" class="tarjeta-luchador"></div>
-
-                    <div class="texto-vs">VS</div>
-
-                    <div id="tarjeta-enemigo-batalla" class="tarjeta-luchador"></div>
+    <div class="arena-duelo">
+        <div class="luchador-lado">
+            <div id="tarjeta-jugador-batalla" class="retrato-batalla">
                 </div>
+            <div id="stats-jugador-batalla" class="stats-batalla-mini"></div>
+        </div>
 
-                <div id="registro-batalla" class="caja-registro"></div>
+        <div class="vs-separador">VS</div>
 
-                <button id="btn-siguiente-batalla" class="btn-primario oculto">Siguiente Batalla</button>
-            </section>
+        <div class="luchador-lado">
+            <div id="tarjeta-enemigo-batalla" class="retrato-batalla">
+                </div>
+            <div id="stats-enemigo-batalla" class="stats-batalla-mini"></div>
+        </div>
+    </div>
+
+    <div id="registro-batalla" class="caja-resultado-batalla"></div>
+
+    <button id="btn-siguiente-batalla" class="btn-primario oculto">Continuar</button>
+</section>
 
             <section id="escena-ProRookie" class="escena">
                 <div id="contenedorProRookie"></div>

@@ -219,20 +219,27 @@ function cargarEscenaEnemigos() {
     batalla(jugador, rivalActual);
     const combateFinalizadoOk = jugador.vida > 0;
 
-    document.getElementById('tarjeta-jugador-batalla').innerHTML = 
-        '<h3>' + jugador.nombre + '</h3>' +
-        '<p>❤️ Vida: ' + jugador.vida + '</p>' +
-        '<p>⚔️ Daño: ' + jugador.ataqueTotal + '</p>';
 
+    document.getElementById('tarjeta-jugador-batalla').innerHTML = 
+        '<img src="./imagenes/tu-imagen-guerrero.jpg" class="img-duelo">' +
+        '<h3>' + jugador.nombre + '</h3>' +
+        '<p>❤️ Vida: ' + jugador.vida + '</p>';
+
+   
+    const imgEnemigo = obtenerImagenEnemigo(rivalActual.nombre);
     document.getElementById('tarjeta-enemigo-batalla').innerHTML = 
+        '<img src="' + imgEnemigo + '" class="img-duelo">' +
         '<h3>' + rivalActual.nombre + '</h3>' +
         '<p>❤️ Vida: ' + (rivalActual.vida <= 0 ? 0 : rivalActual.vida) + '</p>';
 
     const areaTexto = document.getElementById('registro-batalla');
     const botonProximo = document.getElementById('btn-siguiente-batalla');
 
+    
     if (combateFinalizadoOk) {
-        areaTexto.innerHTML = '<h3>¡Has vencido!</h3><p>El ' + rivalActual.nombre + ' ha sido derrotado.</p>';
+        areaTexto.innerHTML = '<h3>¡Ganador: ' + jugador.nombre + '!</h3>' +
+                             '<p>El ' + rivalActual.nombre + ' ha sido derrotado.</p>';
+        
         if (indiceCombate < enemigosBatalla.length - 1) {
             botonProximo.innerText = "Próximo Rival";
         } else {
@@ -246,6 +253,7 @@ function cargarEscenaEnemigos() {
     showScene('escena-batalla');
     botonProximo.classList.remove('oculto');
 
+    
     botonProximo.onclick = () => {
         if (!combateFinalizadoOk) {
             location.reload();
@@ -254,7 +262,7 @@ function cargarEscenaEnemigos() {
             botonProximo.classList.add('oculto');
             ejecutarDueloSecuencial();
         } else {
-            
+          
             mostrarCalificacion();
         }
     };
@@ -294,7 +302,7 @@ function mostrarRankingHistorico() {
     const zonaTabla = document.getElementById('contenedor-TablaFinal');
     
     let tablaHtml = '<h2>Historial de Partidas</h2>' +
-                    '<table border="1" style="width:100%; margin-top:20px; background:white; color:black; text-align:center;">' +
+                    '<table class="tabla-ranking">' + 
                     '<thead><tr><th>Héroe</th><th>Puntos</th><th>Dinero</th></tr></thead>' +
                     '<tbody>';
 
@@ -306,9 +314,19 @@ function mostrarRankingHistorico() {
                      '</tr>';
     });
 
-    tablaHtml += '</tbody></table>' +
-                 '<br><button class="btn-primario" onclick="location.reload()">Reiniciar Juego</button>';
+    tablaHtml += '</tbody></table>';
 
     zonaTabla.innerHTML = tablaHtml;
+    
+    const escenaRanking = document.getElementById('escena-ranking');
+    if(!document.getElementById('btn-reiniciar')){
+        const btnReiniciar = document.createElement('button');
+        btnReiniciar.id = 'btn-reiniciar';
+        btnReiniciar.className = 'btn-primario';
+        btnReiniciar.innerText = 'Reiniciar Juego';
+        btnReiniciar.onclick = () => location.reload();
+        escenaRanking.appendChild(btnReiniciar);
+    }
+
     showScene('escena-ranking');
 }
