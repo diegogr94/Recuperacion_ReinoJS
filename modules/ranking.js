@@ -1,25 +1,27 @@
 import { groupBy } from '../utils/utils.js';
 
 export function batalla(jugador, enemigo) {
-    var vJugador = jugador.vidaActual;
-    var vEnemigo = enemigo.vida;
+    let vJugador = jugador.vidaTotal; 
+    let vEnemigo = enemigo.vida;
 
-    var atqJugador = jugador.ataqueTotal;
-    var defJugador = jugador.defensaTotal;
-    var atqEnemigo = enemigo.ataque;
+    let atqJugador = jugador.ataqueTotal;
+    let defJugador = jugador.defensaTotal;
+    let atqEnemigo = enemigo.ataque;
 
     while (vJugador > 0 && vEnemigo > 0) {
-       
-        vEnemigo = vEnemigo - atqJugador;
         
+        vEnemigo -= atqJugador;
         if (vEnemigo <= 0) break;
 
-       
-        vJugador = (vJugador + defJugador) - atqEnemigo;
+        let dañoRecibido = atqEnemigo - (defJugador / 2); 
+        if (dañoRecibido < 1) dañoRecibido = 1;
+
+        vJugador -= dañoRecibido;
     }
 
-    jugador.vidaActual = vJugador < 0 ? 0 : vJugador;
-    return jugador.vidaActual > 0;
+    
+    jugador.vida = vJugador < 0 ? 0 : vJugador;
+    return jugador.vida > 0;
 }
 
 export function agruparPorNivel(jugadores, umbral = 300) {

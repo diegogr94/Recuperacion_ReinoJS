@@ -311,9 +311,9 @@ function cargarEscenaEnemigos() {
     contenedor.innerHTML = ""; 
 
     enemigosBatalla = [
-        new Enemigo("Troll", 1, 5),
-        new Enemigo("Minotauro", 1, 6),
-        new JefeFinal("Mago", 2, 1, "Fuego de Eventos", 1.5)
+        new Enemigo("Troll", 10, 50),
+    new Enemigo("Minotauro", 15, 80),
+    new JefeFinal("Mago", 30, 200, "Trueno", 1.5)
     ];
 
     
@@ -366,6 +366,11 @@ function activarCascadaMonedas() {
 }
 
     function ejecutarDueloSecuencial() {
+
+console.log("ATAQUE TOTAL:", jugador.ataqueTotal);
+console.log("DEFENSA TOTAL:", jugador.defensaTotal);
+console.log("VIDA TOTAL:", jugador.vidaTotal);
+
     const rivalActual = enemigosBatalla[indiceCombate];
     
     batalla(jugador, rivalActual);

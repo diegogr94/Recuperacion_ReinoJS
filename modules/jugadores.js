@@ -15,6 +15,9 @@ export class Jugador {
 
   añadirItem(item) {
     this.inventario.push(structuredClone(item));
+    if (item.tipo === 'consumible' && item.bonus.curacion) {
+        this.vida += item.bonus.curacion;
+  }
   }
 
   ganarPuntos(cantidad) {
@@ -26,7 +29,7 @@ export class Jugador {
     let totalBonus = 0;
     for (let i = 0; i < this.inventario.length; i++) {
       let item = this.inventario[i];
-      if (item.tipo === 'Arma' && item.bonus.ataque) {
+      if (item.tipo === 'arma' && item.bonus.ataque) {
         totalBonus += item.bonus.ataque;
       }
     }
@@ -37,7 +40,7 @@ export class Jugador {
     let totalBonus = 0;
     for (let i = 0; i < this.inventario.length; i++) {
       let item = this.inventario[i];
-      if (item.tipo === 'Armadura' && item.bonus.defensa) {
+      if (item.tipo === 'armadura' && item.bonus.defensa) {
         totalBonus += item.bonus.defensa;
       }
     }
@@ -48,7 +51,7 @@ export class Jugador {
     let totalBonus = 0;
     for (let i = 0; i < this.inventario.length; i++) {
       let item = this.inventario[i];
-      if (item.tipo === 'Consumible' && item.bonus.curacion) {
+      if (item.tipo === 'consumible' && item.bonus.curacion) {
         totalBonus += item.bonus.curacion;
       }
     }
