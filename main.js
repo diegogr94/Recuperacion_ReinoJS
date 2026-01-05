@@ -13,6 +13,33 @@ let indiceCombate = 0;
 
 
 window.onload = () => {
+
+function cargarDatosPrueba() {
+    const rankingExistente = localStorage.getItem('ranking_final');
+
+    if (!rankingExistente || JSON.parse(rankingExistente).length === 0) {
+        const datosPrueba = [
+            { idNombre: "sdafsdf", idPuntos: 950, idDinero: 450, idFecha: "01/01/2026" },
+            { idNombre: "dfgsdf", idPuntos: 840, idDinero: 120, idFecha: "01/01/2026" },
+            { idNombre: "fdgdfsg", idPuntos: 120, idDinero: 40, idFecha: "02/01/2026" },
+            { idNombre: "dfgsdfg", idPuntos: 1100, idDinero: 600, idFecha: "02/01/2026" },
+            { idNombre: "sdfdsf", idPuntos: 750, idDinero: 300, idFecha: "02/01/2026" },
+            { idNombre: "asdasd", idPuntos: 640, idDinero: 160, idFecha: "02/01/2026" },
+            { idNombre: "asdfdsaf", idPuntos: 500, idDinero: 100, idFecha: "02/01/2026" },
+            { idNombre: "sdfsdf", idPuntos: 990, idDinero: 200, idFecha: "02/01/2026" },
+            { idNombre: "sdfsadf", idPuntos: 430, idDinero: 90, idFecha: "02/01/2026" },
+            { idNombre: "dsfsdaf", idPuntos: 880, idDinero: 350, idFecha: "02/01/2026" },
+            { idNombre: "sdfdsf", idPuntos: 320, idDinero: 50, idFecha: "02/01/2026" },
+            { idNombre: "sadfsdfdsf", idPuntos: 1050, idDinero: 500, idFecha: "02/01/2026" }
+        ];
+        
+        localStorage.setItem('ranking_final', JSON.stringify(datosPrueba));
+        console.log("Datos de prueba cargados en el Ranking");
+    }
+}
+
+
+cargarDatosPrueba();
     
     document.getElementById('btn-ir-jugador').onclick = validarYCrearJugador;
 };
@@ -44,6 +71,8 @@ function validarYCrearJugador() {
 
     
     jugador = new Jugador(nombre, ataque, defensa, vida);
+
+    actualizarMonederoVisual();
     
     cargarEscenaResumenJugador();
 }
@@ -57,14 +86,16 @@ function cargarEscenaResumenJugador() {
     
     
     container.innerHTML = 
-        '<div class="stat-card">Ataque: ' + jugador.ataqueBase + '</div>' +
-        '<div class="stat-card">Defensa: ' + jugador.defensaBase + '</div>' +
-        '<div class="stat-card">Vida: ' + jugador.vidaMax + '</div>' +
-        '<div class="stat-card">Puntos: ' + jugador.puntos + '</div>';
+        '<div class="estadisticas-card">Ataque: ' + jugador.ataqueBase + '</div>' +
+        '<div class="estadisticas-card">Defensa: ' + jugador.defensaBase + '</div>' +
+        '<div class="estadisticas-card">Vida: ' + jugador.vidaMax + '</div>' +
+        '<div class="estadisticas-card">Puntos: ' + jugador.puntos + '</div>';
 
     showScene('escena-jugador');
     document.getElementById('btn-ir-mercado-fijo').onclick = cargarEscenaMercado;
 }
+
+
 
 
 function obtenerImagenProducto(nombre) {
@@ -86,34 +117,99 @@ const mapaImagenes = {
     return mapaImagenes[nombre] || './imagenes/espadaCorta.jpg'; 
 }
 
+
+function refrescarInventarioVisual(listaAMostrar) {
+    var todosLosHuecos = document.querySelectorAll('.espacio-inventario');
+
+    for (var i = 0; i < todosLosHuecos.length; i++) {
+        todosLosHuecos[i].innerHTML = "";
+    }
+
+    if (listaAMostrar) {
+        for (var j = 0; j < listaAMostrar.length && j < 6; j++) {
+            var productoActual = listaAMostrar[j];
+            var huecoActual = todosLosHuecos[j];
+
+            var imagenObjeto = document.createElement('img');
+            
+            imagenObjeto.src = obtenerImagenProducto(productoActual.nombre); 
+            
+            imagenObjeto.style.width = "40px";
+            imagenObjeto.style.height = "40px";
+            imagenObjeto.style.objectFit = "contain";
+
+            huecoActual.appendChild(imagenObjeto);
+        }
+    }
+}
+
+
+function refrescarInventarioTemporal(laCesta) {
+    refrescarInventarioVisual(laCesta);
+}
+
+function elegirRarezaEnOferta() {
+    
+    var todasLasRarezas = ["común", "raro", "épico"]; 
+    var indiceAzar = Math.floor(Math.random() * todasLasRarezas.length);
+    return todasLasRarezas[indiceAzar];
+}
+
+
 function cargarEscenaMercado() {
     const escaparate = document.getElementById('contenedor-productos');
+    if (!escaparate) return;
+    
+   
     escaparate.innerHTML = ""; 
 
-    const productosEnVenta = aplicarDescuentoPorRareza(obtenerRarezaAleatoria(), 10);
+   
+    const rarezaEnOferta = elegirRarezaEnOferta();
+    
+    
+    const productosEnVenta = aplicarDescuentoPorRareza(rarezaEnOferta, 10);
 
-    productosEnVenta.forEach(objeto => {
+    console.log("Oferta del día aplicada a la rareza: " + rarezaEnOferta);
+
+    for (var i = 0; i < productosEnVenta.length; i++) {
+        var objeto = productosEnVenta[i];
+        
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-producto';
 
+        if (objeto.rareza === rarezaEnOferta) {
+            
+            objeto = objeto.aplicarDescuento(10); 
+            
+            tarjeta.style.backgroundColor = "#fff3cd"; 
+            tarjeta.style.border = "2px solid gold";
+        }
+
+        
         const rutaImagen = obtenerImagenProducto(objeto.nombre);
 
-       
+        const precioFormateado = (objeto.precio / 100).toFixed(2).replace('.', ',') + "€";
+
         tarjeta.innerHTML = 
             '<img src="' + rutaImagen + '" alt="' + objeto.nombre + '" class="img-producto">' +
             '<div class="info-producto">' +
                 '<p><strong>' + objeto.nombre + '</strong></p>' +
-                '<p>' + objeto.mostrarProducto() + '</p>' +
+                '<p>Precio: ' + precioFormateado + '</p>' + 
+                '<p>' + objeto.mostrarProducto() + '</p>' + 
+                '<p><small>Rareza: ' + objeto.rareza + '</small></p>' +
             '</div>' +
-            '<button class="boton-accion">Añadir</button>';
+            '<button class="btn-primario boton-accion">Añadir</button>';
 
         const boton = tarjeta.querySelector('.boton-accion');
-        boton.onclick = function() {
-            gestionarCesta(objeto, tarjeta, boton);
-        };
+        
+        (function(prod, tarj, btn) {
+            btn.onclick = function() {
+                gestionarCesta(prod, tarj, btn);
+            };
+        })(objeto, tarjeta, boton);
 
         escaparate.appendChild(tarjeta);
-    });
+    }
 
     showScene('escena-mercado');
     document.getElementById('btn-confirmar-compra').onclick = confirmarCompra;
@@ -121,47 +217,80 @@ function cargarEscenaMercado() {
 
 function gestionarCesta(producto, tarjetaVisual, elBoton) {
     
-    const yaLoTengo = cesta.includes(producto);
+    var yaLoTengo = false;
+    for (var i = 0; i < cesta.length; i++) {
+        if (cesta[i] === producto) {
+            yaLoTengo = true;
+            break;
+        }
+    }
 
     if (yaLoTengo === false) {
-        
         if (jugador.dinero >= producto.precio) {
             cesta.push(producto);               
             jugador.dinero -= producto.precio;  
             
             tarjetaVisual.style.backgroundColor = "orange"; 
-            elBoton.innerText = "Retirar";      
+            elBoton.innerText = "Retirar";  
         } else {
             alert("¡No tienes oro suficiente!");
         }
-    } 
-    else {
-       
-        cesta = cesta.filter(item => item !== producto);
+    } else {
+        
+        for (var j = 0; j < cesta.length; j++) {
+            if (cesta[j] === producto) {
+                cesta.splice(j, 1);
+                break;
+            }
+        }
         
         jugador.dinero += producto.precio;    
         tarjetaVisual.style.backgroundColor = ""; 
         elBoton.innerText = "Añadir";         
     }
 
-    
+ 
     document.getElementById('oro-disponible').innerText = (jugador.dinero / 100).toFixed(2);
+
+    actualizarMonederoVisual();
+  
+    refrescarInventarioTemporal(cesta);
 }
 
 
 function confirmarCompra() {
     if (cesta.length === 0) {
         alert("No has seleccionado ningún objeto.");
+        return; 
     }
-    
-    for (let i = 0; i < cesta.length; i++) {
+    for (var i = 0; i < cesta.length; i++) {
         jugador.añadirItem(cesta[i]);
     }
-    
     cesta = []; 
-    alert("¡Compra confirmada! Tu inventario ha sido actualizado.");
+    refrescarInventarioVisual(jugador.inventario);
     
-    cargarEscenaEnemigos();
+    
+    cargarEscena4();
+}
+
+
+function cargarEscena4() {
+    
+    document.getElementById('nombre-actualizado').innerText = jugador.nombre;
+
+    var container = document.getElementById('contenedor-resumen-actualizado');
+  
+    container.innerHTML = 
+        '<div class="estadisticas-card">Ataque Total: ' + jugador.ataqueTotal + '</div>' +
+        '<div class="estadisticas-card">Defensa Total: ' + jugador.defensaTotal + '</div>' +
+        '<div class="estadisticas-card">Vida Total: ' + jugador.vidaTotal + '</div>' +
+        '<div class="estadisticas-card">Oro Restante: ' + (jugador.dinero / 100).toFixed(2) + '€</div>';
+
+    showScene('escena-jugador-actualizada');
+    
+    document.getElementById('btn-listo-combate').onclick = function() {
+        cargarEscenaEnemigos();
+    };
 }
 
 
@@ -214,18 +343,54 @@ function cargarEscenaEnemigos() {
     };
 }
 
+
+function activarCascadaMonedas() {
+   
+    const monedasViejas = document.querySelectorAll('.moneda_animacion');
+    monedasViejas.forEach(m => m.remove());
+
+    const posiciones = ['25%', '50%', '75%'];
+    
+
+    let html = '';
+    posiciones.forEach(pos => {
+        html += `<img src="./imagenes/moneda.png" class="moneda_animacion" style="left: ${pos};">`;
+    });
+
+    document.body.insertAdjacentHTML('beforeend', html);
+
+    setTimeout(() => {
+        const monedasActuales = document.querySelectorAll('.moneda_animacion');
+        monedasActuales.forEach(m => m.remove());
+    }, 1500);
+}
+
     function ejecutarDueloSecuencial() {
     const rivalActual = enemigosBatalla[indiceCombate];
+    
     batalla(jugador, rivalActual);
     const combateFinalizadoOk = jugador.vida > 0;
 
+    var lados = document.querySelectorAll('.luchador-lado');
+    var ladoJugador = lados[0];
+    var ladoEnemigo = lados[1];
+
+    ladoJugador.classList.add('jugador-anim');
+    ladoEnemigo.classList.add('enemigo-anim');
+    ladoJugador.classList.remove('entrar');
+    ladoEnemigo.classList.remove('entrar');
+
+    setTimeout(function() {
+        ladoJugador.classList.add('entrar');
+        ladoEnemigo.classList.add('entrar');
+    }, 50);
+    
 
     document.getElementById('tarjeta-jugador-batalla').innerHTML = 
         '<img src="./imagenes/caballero.png" class="img-duelo">' +
         '<h3>' + jugador.nombre + '</h3>' +
         '<p>❤️ Vida: ' + jugador.vida + '</p>';
 
-   
     const imgEnemigo = obtenerImagenEnemigo(rivalActual.nombre);
     document.getElementById('tarjeta-enemigo-batalla').innerHTML = 
         '<img src="' + imgEnemigo + '" class="img-duelo">' +
@@ -235,10 +400,28 @@ function cargarEscenaEnemigos() {
     const areaTexto = document.getElementById('registro-batalla');
     const botonProximo = document.getElementById('btn-siguiente-batalla');
 
-    
     if (combateFinalizadoOk) {
+        activarCascadaMonedas();
+
+        let botinMonedas = 5; 
+        if (rivalActual instanceof JefeFinal) {
+            botinMonedas = 10;
+        }
+        jugador.dinero += botinMonedas;
+        actualizarMonederoVisual();
+
+        let puntosGanados = 100 + rivalActual.ataque;
+        
+        if (rivalActual instanceof JefeFinal && rivalActual.multiplicador) {
+            puntosGanados = Math.round(puntosGanados * rivalActual.multiplicador);
+        }
+        
+        jugador.ganarPuntos(puntosGanados);
+
         areaTexto.innerHTML = '<h3>¡Ganador: ' + jugador.nombre + '!</h3>' +
-                             '<p>El ' + rivalActual.nombre + ' ha sido derrotado.</p>';
+                              '<p>El ' + rivalActual.nombre + ' ha sido derrotado.</p>' +
+                              '<p><strong>+ ' + botinMonedas + ' monedas.</strong></p>' +
+                              '<p><strong>+ ' + puntosGanados + ' puntos.</strong></p>';
         
         if (indiceCombate < enemigosBatalla.length - 1) {
             botonProximo.innerText = "Próximo Rival";
@@ -253,80 +436,94 @@ function cargarEscenaEnemigos() {
     showScene('escena-batalla');
     botonProximo.classList.remove('oculto');
 
-    
     botonProximo.onclick = () => {
         if (!combateFinalizadoOk) {
-            location.reload();
+            location.reload(); 
         } else if (indiceCombate < enemigosBatalla.length - 1) {
-            indiceCombate++;
-            botonProximo.classList.add('oculto');
-            ejecutarDueloSecuencial();
+            indiceCombate++; 
+            botonProximo.classList.add('oculto'); 
+            ejecutarDueloSecuencial(); 
         } else {
-          
-            mostrarCalificacion();
+
+            mostrarCalificacion(); 
         }
     };
 }
 
 function mostrarCalificacion() {
-    const esSuperior = jugador.puntos >= 200; 
-    const calificacion = esSuperior ? '🥇 PRO' : '🥉 ROOKIE';
+    var puntosFinalesTotales = jugador.puntos + jugador.dinero;
+    var esPro = puntosFinalesTotales >= 300;
+    var calificacion = esPro ? '🥇 PRO' : '🥉 ROOKIE';
     
-    const datosPartida = {
+    if (esPro) {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
+    
+    var datosPartida = {
         idNombre: jugador.nombre,
-        idPuntos: jugador.puntos,
+        idPuntos: puntosFinalesTotales, 
         idDinero: jugador.dinero,
         idFecha: new Date().toLocaleDateString()
-        
     };
-    let almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
+    
+    var almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
     almacen.push(datosPartida);
     localStorage.setItem('ranking_final', JSON.stringify(almacen));
 
-    const zonaRango = document.getElementById('contenedorProRookie');
+    var zonaRango = document.getElementById('contenedorProRookie');
     zonaRango.innerHTML = '<h2>Resultado Final</h2>' +
                           '<div class="caja-registro">' +
                           '<h3>Nivel obtenido: ' + calificacion + '</h3>' +
-                          '<p>Puntuación total: ' + jugador.puntos + '</p>' +
+                          '<p>Puntuación Total (Batallas + Oro): ' + puntosFinalesTotales + '</p>' +
                           '</div>' +
                           '<button id="btn-ir-ranking" class="btn-primario">Ver Clasificación</button>';
 
     showScene('escena-ProRookie');
-
     document.getElementById('btn-ir-ranking').onclick = mostrarRankingHistorico;
 }
 
 
 function mostrarRankingHistorico() {
-    const almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
-    const zonaTabla = document.getElementById('contenedor-TablaFinal');
-    
-    let tablaHtml = '<h2>Historial de Partidas</h2>' +
+    var almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
+    var zonaTabla = document.getElementById('contenedor-TablaFinal');
+
+    var tablaHtml = '<h2>Historial de Partidas</h2>' +
                     '<table class="tabla-ranking">' + 
                     '<thead><tr><th>Héroe</th><th>Puntos</th><th>Dinero</th></tr></thead>' +
                     '<tbody>';
 
-    almacen.forEach(reg => {
-        tablaHtml += '<tr>' +
-                     '<td>' + reg.idNombre + '</td>' +
-                     '<td>' + reg.idPuntos + '</td>' +
-                     '<td>' + reg.idDinero + '</td>' +
-                     '</tr>';
-    });
-
-    tablaHtml += '</tbody></table>';
-
-    zonaTabla.innerHTML = tablaHtml;
-    
-    const escenaRanking = document.getElementById('escena-ranking');
-    if(!document.getElementById('btn-reiniciar')){
-        const btnReiniciar = document.createElement('button');
-        btnReiniciar.id = 'btn-reiniciar';
-        btnReiniciar.className = 'btn-primario';
-        btnReiniciar.innerText = 'Reiniciar Juego';
-        btnReiniciar.onclick = () => location.reload();
-        escenaRanking.appendChild(btnReiniciar);
+    for (var i = 0; i < almacen.length; i++) {
+        var reg = almacen[i];
+        tablaHtml = tablaHtml + '<tr>' +
+                    '<td>' + reg.idNombre + '</td>' +
+                    '<td>' + reg.idPuntos + '</td>' +
+                    '<td>' + reg.idDinero + '</td>' +
+                    
+                    '</tr>';
     }
+    tablaHtml = tablaHtml + '</tbody></table>';
+    zonaTabla.innerHTML = tablaHtml;
+
+    document.getElementById('btn-mostrar-consola').onclick = function() {
+        console.log("--- RANKING DE JUGADORES ---");
+        console.table(almacen);
+    };
+
+    document.getElementById('btn-reiniciar').onclick = function() {
+        location.reload();
+    };
 
     showScene('escena-ranking');
+
+    actualizarMonederoVisual();
+}
+
+
+function actualizarMonederoVisual() {
+    const dineroAMostrar = (jugador.dinero / 100).toFixed(2);
+    document.getElementById("dineroSaco").textContent = dineroAMostrar;
 }

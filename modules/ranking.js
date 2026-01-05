@@ -1,46 +1,33 @@
 import { groupBy } from '../utils/utils.js';
 
-
 export function batalla(jugador, enemigo) {
-    let vidaJugador = jugador.vida;
-    let vidaEnemigo = enemigo.vida;
+    var vJugador = jugador.vidaActual;
+    var vEnemigo = enemigo.vida;
 
-    const dmgJugador = Math.max(1, jugador.ataqueTotal); 
-    const dmgEnemigo = Math.max(1, enemigo.ataque - jugador.defensaTotal);
+    var atqJugador = jugador.ataqueTotal;
+    var defJugador = jugador.defensaTotal;
+    var atqEnemigo = enemigo.ataque;
 
-    let rondas = 0; 
-    while (vidaJugador > 0 && vidaEnemigo > 0 && rondas < 100) {
-        vidaEnemigo -= dmgJugador;
-        if (vidaEnemigo <= 0) break;
-        vidaJugador -= dmgEnemigo;
-        rondas++; 
+    while (vJugador > 0 && vEnemigo > 0) {
+       
+        vEnemigo = vEnemigo - atqJugador;
+        
+        if (vEnemigo <= 0) break;
+
+       
+        vJugador = (vJugador + defJugador) - atqEnemigo;
     }
 
-    jugador.vida = Math.max(0, vidaJugador);
-    const ganoJugador = jugador.vida > 0;
-
-   if (ganoJugador) {
-    let puntosFinales = 100 + enemigo.ataque;
-    
-    
-    if (enemigo.tipo === 'jefe' && enemigo.multiplicador) {
-        puntosFinales = Math.floor(puntosFinales * enemigo.multiplicador);
-    }
-    
-    jugador.ganarPuntos(puntosFinales);
-}
-
-    return { ganador: ganoJugador ? jugador.nombre : enemigo.nombre };
+    jugador.vidaActual = vJugador < 0 ? 0 : vJugador;
+    return jugador.vidaActual > 0;
 }
 
 export function agruparPorNivel(jugadores, umbral = 300) {
-  return groupBy(jugadores, jugador => (jugador.puntos >= umbral ? 'pro' : 'rookie'));
+    return groupBy(jugadores, jugador => (jugador.puntos >= umbral ? 'pro' : 'rookie'));
 }
 
 export function mostrarRanking(jugadores) {
-
     const listaParaMostrar = [...jugadores];
-
     for (let i = 0; i < listaParaMostrar.length; i++) {
         for (let j = 0; j < listaParaMostrar.length - 1; j++) {
             if (listaParaMostrar[j].puntos < listaParaMostrar[j + 1].puntos) {
@@ -50,9 +37,8 @@ export function mostrarRanking(jugadores) {
             }
         }
     }
-
     console.log('🏆 RANKING FINAL 🏆');
-    listaParaMostrar.forEach(unJugador => {
-        console.log(unJugador.nombre + ' - Puntos: ' + unJugador.puntos);
-    });
+    for (let k = 0; k < listaParaMostrar.length; k++) {
+        console.log(listaParaMostrar[k].idNombre + ' - Puntos: ' + listaParaMostrar[k].idPuntos);
+    }
 }

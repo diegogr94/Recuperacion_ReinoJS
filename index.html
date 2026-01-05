@@ -86,12 +86,27 @@
             </section>
 
 
+            <section id="escena-jugador-actualizada" class="escena">
+    <div class="info-superior-heroe">
+        <div class="retrato-heroe">
+            <img src="imagenes/caballero.png" alt="Guerrero" style="width:100%; height:100%; object-fit: cover;">
+        </div>
+        <h2 id="nombre-actualizado"></h2> 
+    </div>
+
+    <div id="contenedor-resumen-actualizado" class="grid-estadisticas">
+    </div>
+
+    <button id="btn-listo-combate" class="btn-primario">Continuar a Enemigos</button>
+</section>
+
+
             <section id="escena-batalla" class="escena">
     <div class="arena-duelo">
         <div class="luchador-lado">
             <div id="tarjeta-jugador-batalla" class="retrato-batalla">
                 </div>
-            <div id="stats-jugador-batalla" class="stats-batalla-mini"></div>
+            <div id="estadisticas-jugador-batalla" class="estadisticas-batalla-mini"></div>
         </div>
 
         <div class="vs-separador">VS</div>
@@ -99,7 +114,7 @@
         <div class="luchador-lado">
             <div id="tarjeta-enemigo-batalla" class="retrato-batalla">
                 </div>
-            <div id="stats-enemigo-batalla" class="stats-batalla-mini"></div>
+            <div id="estadisticas-enemigo-batalla" class="estadisticas-batalla-mini"></div>
         </div>
     </div>
 
@@ -115,6 +130,12 @@
 
             <section id="escena-ranking" class="escena">
                 <div id="contenedor-TablaFinal"></div>
+                <div id="acciones-ranking">
+                   
+        <button id="btn-mostrar-consola" class="btn-primario">Mostrar en Consola</button>
+        <button id="btn-reiniciar" class="btn-primario">Reiniciar Juego</button>
+        
+    </div>
             </section>
 
 
@@ -131,7 +152,17 @@
             <div class="espacio-inventario"></div>
             <div class="espacio-inventario"></div>
         </div>
+
+         <div id="contenedorMonedero" class="animacionMonedero">
+    <img src="./imagenes/monedero.png" alt="Monedero">
+    <span id="dineroSaco">500</span>
+</div>
+
     </footer>
+
+   
+
+    
 
 
 </body>

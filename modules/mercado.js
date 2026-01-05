@@ -22,12 +22,23 @@ export function obtenerRarezaAleatoria() {
 }
 
 
-export function aplicarDescuentoPorRareza(rareza, porcentaje) {
-    return mercado.map(producto =>
-        producto.rareza === rareza 
-            ? producto.aplicarDescuento(porcentaje) 
-            : producto 
-    );
+export function aplicarDescuentoPorRareza(rarezaRecibida, porcentaje) {
+    
+    var productosConDescuento = [];
+
+    for (var i = 0; i < mercado.length; i++) {
+        var producto = mercado[i];
+
+        if (producto.rareza === rarezaRecibida) {
+            
+            producto.aplicarDescuento(porcentaje);
+        }
+        
+        
+        productosConDescuento.push(producto);
+    }
+
+    return productosConDescuento;
 }
 
 export function buscarProducto(nombre) {
