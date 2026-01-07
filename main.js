@@ -132,13 +132,6 @@ function refrescarInventarioTemporal(laCesta) {
     refrescarInventarioVisual(laCesta);
 }
 
-function elegirRarezaEnOferta() {
-    
-    var todasLasRarezas = ["común", "raro", "épico"]; 
-    var indiceAzar = Math.floor(Math.random() * todasLasRarezas.length);
-    return todasLasRarezas[indiceAzar];
-}
-
 
 function cargarEscenaMercado() {
     const escaparate = document.getElementById('contenedor-productos');
@@ -148,7 +141,7 @@ function cargarEscenaMercado() {
     escaparate.innerHTML = ""; 
 
    
-    const rarezaEnOferta = elegirRarezaEnOferta();
+    const rarezaEnOferta = obtenerRarezaAleatoria();
     
     
     const productosEnVenta = aplicarDescuentoPorRareza(rarezaEnOferta, 10);
