@@ -101,28 +101,6 @@ function cargarEscenaResumenJugador() {
 }
 
 
-
-
-function obtenerImagenProducto(nombre) {
-    
-const mapaImagenes = {
-        'Espada corta':       './imagenes/espadaCorta.jpg',
-        'Arco de caza':       './imagenes/arcoCaza.jpg',
-        'Armadura de cuero':  './imagenes/armaduraCuero.jpg',
-        'Poción pequeña':     './imagenes/pocionPeque.jpg',
-        'Espada rúnica':      './imagenes/espadaRunica.jpg',
-        'Escudo de roble':    './imagenes/escudoRoble.jpg',
-        'Poción grande':      './imagenes/pocionGrande.jpg',
-        'Mandoble épico':     './imagenes/mandobleEpico.jpg',
-        'Placas dracónicas':  './imagenes/placasDraconicas.jpg',
-        'Elixir legendario':  './imagenes/elixirLegendario.jpg'
-    };
-    
-    
-    return mapaImagenes[nombre] || './imagenes/espadaCorta.jpg'; 
-}
-
-
 function refrescarInventarioVisual(listaAMostrar) {
     var todosLosHuecos = document.querySelectorAll('.espacio-inventario');
 
@@ -137,7 +115,8 @@ function refrescarInventarioVisual(listaAMostrar) {
 
             var imagenObjeto = document.createElement('img');
             
-            imagenObjeto.src = obtenerImagenProducto(productoActual.nombre); 
+           
+imagenObjeto.src = productoActual.imagen; 
             
             imagenObjeto.style.width = "40px";
             imagenObjeto.style.height = "40px";
@@ -191,7 +170,7 @@ function cargarEscenaMercado() {
         }
 
         
-        const rutaImagen = obtenerImagenProducto(objeto.nombre);
+        const rutaImagen = objeto.imagen;
 
         const precioFormateado = (objeto.precio / 100).toFixed(2).replace('.', ',') + "€";
 
