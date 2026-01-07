@@ -610,7 +610,7 @@ main {
 }
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 720px) {
     :root {
         
         --fuente-label-registro: 18px;
@@ -775,5 +775,29 @@ main {
     #dineroSaco {
         font-size: 0.65rem;
         margin-top: 5px;
+    }
+}
+
+
+@media screen and (max-width: 360px) {
+    :root {
+        --fuente-titulo-grande: 1.4rem;
+        --tamaño-img-producto: 50px;
+        --tamaño-img-enemigo: 60px;
+    }
+
+   
+    .grid-productos {
+        grid-template-columns: 1fr;
+    }
+
+    
+    header h1 {
+        font-size: 0.9rem;
+    }
+
+    .estadisticas-batalla-mini {
+        font-size: 0.7rem;
+        padding: 2px;
     }
 }
