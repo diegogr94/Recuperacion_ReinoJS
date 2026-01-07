@@ -473,7 +473,7 @@ function mostrarRankingHistorico() {
     var almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
     var zonaTabla = document.getElementById('contenedor-TablaFinal');
 
-    var tablaHtml = '<h2>Historial de Partidas</h2>' +
+    var tablaHtml = '<h2 class="titulo-historial">Historial de Partidas</h2>' +
                     '<table class="tabla-ranking">' + 
                     '<thead><tr><th>Héroe</th><th>Puntos</th><th>Dinero</th></tr></thead>' +
                     '<tbody>';
