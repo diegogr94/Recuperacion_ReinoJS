@@ -13,7 +13,7 @@ export function batalla(jugador, enemigo) {
         vEnemigo -= atqJugador;
         if (vEnemigo <= 0) break;
 
-        let dañoRecibido = atqEnemigo - (defJugador / 2); 
+        let dañoRecibido = Math.floor(atqEnemigo - (defJugador / 2)); 
         if (dañoRecibido < 1) dañoRecibido = 1;
 
         vJugador -= dañoRecibido;
