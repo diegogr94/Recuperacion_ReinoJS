@@ -59,13 +59,18 @@ function validarYCrearJugador() {
     }
 
     
-    if ((ataque + defensa + vida) > 110) {
-        alert("No puedes repartir más de 10 puntos extra.");
+    if (vida !== 100) {
+        alert("La vida inicial debe ser exactamente 100. Los puntos extra solo son para Ataque y Defensa.");
         return;
     }
 
-    if (ataque < 0 || defensa < 0 || vida < 100) {
-        alert("Valores mínimos: Ataque 0, Defensa 0, Vida 100.");
+    if ((ataque + defensa) > 10) {
+        alert("No puedes repartir más de 10 puntos extra entre ataque y defensa.");
+        return;
+    }
+
+    if (ataque < 0 || defensa < 0) {
+        alert("El ataque y la defensa no pueden ser valores negativos.");
         return;
     }
 
