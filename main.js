@@ -11,6 +11,10 @@ let cesta = [];
 let enemigosBatalla = []; 
 let indiceCombate = 0;
 
+const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
+const ERROR_EXCESO = "La suma total pasa de 110.";
+const ERROR_NEGATIVO = "No puede ser negativo.";
+
 
 window.onload = () => {
 
@@ -48,30 +52,55 @@ function validarYCrearJugador() {
     const nombreInput = document.getElementById('reg-nombre').value;
     const nombre = nombreInput.trim(); 
 
+   const spanNombre = document.getElementById('error-nombre');
+    const spanAtaque = document.getElementById('error-ataque');   // Recuperado
+    const spanDefensa = document.getElementById('error-defensa'); // Recuperado
+    const spanVida = document.getElementById('error-vida');       // Aquí mostramos error de vida y suma
+
+    // 2. LIMPIAR MENSAJES
+    spanNombre.textContent = "";
+    spanAtaque.textContent = "";
+    spanDefensa.textContent = "";
+    spanVida.textContent = "";
+
     const ataque = parseInt(document.getElementById('reg-ataque').value) || 0;
     const defensa = parseInt(document.getElementById('reg-defensa').value) || 0;
     const vida = parseInt(document.getElementById('reg-vida').value) || 100;
 
+    let hayError = false;
+
    
+    
     if (!REGEX_NOMBRE.test(nombreInput) || nombre === "") {
-        alert("El nombre debe empezar por Mayúscula y tener máximo 20 caracteres.");
-        return;
+        spanNombre.textContent = ERROR_NOMBRE;
+        hayError = true;
     }
 
     
-    if (vida !== 100) {
-        alert("La vida inicial debe ser exactamente 100. Los puntos extra solo son para Ataque y Defensa.");
-        return;
+    if (ataque < 0) {
+        spanAtaque.textContent = ERROR_NEGATIVO;
+        hayError = true;
+    }
+    if (defensa < 0) {
+        spanDefensa.textContent = ERROR_NEGATIVO;
+        hayError = true;
     }
 
-    if ((ataque + defensa) > 10) {
-        alert("No puedes repartir más de 10 puntos extra entre ataque y defensa.");
-        return;
+    
+    if (vida < 100) {
+        spanVida.textContent = "Mínimo 100 puntos de vida.";
+        hayError = true;
+    } else {
+        
+        if ((ataque + defensa + vida) > 110) {
+            spanVida.textContent = ERROR_EXCESO;
+            hayError = true;
+        }
     }
 
-    if (ataque < 0 || defensa < 0) {
-        alert("El ataque y la defensa no pueden ser valores negativos.");
-        return;
+
+    if (hayError) {
+        return; 
     }
 
     
@@ -80,7 +109,7 @@ function validarYCrearJugador() {
     actualizarMonederoVisual();
     
     cargarEscenaResumenJugador();
-}
+ }
 
 function cargarEscenaResumenJugador() {
     
@@ -166,14 +195,16 @@ function cargarEscenaMercado() {
         const rutaImagen = objeto.imagen;
 
         const precioFormateado = (objeto.precio / 100).toFixed(2).replace('.', ',') + "€";
+        
+        
+        const precioNormal = objeto.precio;
 
         tarjeta.innerHTML = 
             '<img src="' + rutaImagen + '" alt="' + objeto.nombre + '" class="img-producto">' +
             '<div class="info-producto">' +
-                '<p><strong>' + objeto.nombre + '</strong></p>' +
-                '<p>Precio: ' + precioFormateado + '</p>' + 
+                 
                 '<p>' + objeto.mostrarProducto() + '</p>' + 
-                '<p><small>Rareza: ' + objeto.rareza + '</small></p>' +
+                
             '</div>' +
             '<button class="btn-primario boton-accion">Añadir</button>';
 
@@ -227,7 +258,7 @@ function gestionarCesta(producto, tarjetaVisual, elBoton) {
     }
 
  
-    document.getElementById('oro-disponible').innerText = (jugador.dinero / 100).toFixed(2);
+    document.getElementById('oro-disponible').innerText = jugador.dinero;
 
     actualizarMonederoVisual();
   
@@ -261,7 +292,7 @@ function cargarEscena4() {
         '<div class="estadisticas-card">Ataque Total: ' + jugador.ataqueTotal + '</div>' +
         '<div class="estadisticas-card">Defensa Total: ' + jugador.defensaTotal + '</div>' +
         '<div class="estadisticas-card">Vida Total: ' + jugador.vidaTotal + '</div>' +
-        '<div class="estadisticas-card">Oro Restante: ' + (jugador.dinero / 100).toFixed(2) + '€</div>';
+        '<div class="estadisticas-card">Oro Restante: ' + jugador.dinero + '</div>';
 
     showScene('escena-jugador-actualizada');
     
@@ -314,7 +345,6 @@ function cargarEscenaEnemigos() {
     showScene('escena-enemigos');
 
     document.getElementById('btn-comenzar-combate').onclick = () => {
-        alert("¡El combate va a empezar!");
         indiceCombate = 0; 
         ejecutarDueloSecuencial();
     };
@@ -506,6 +536,7 @@ function mostrarRankingHistorico() {
 
 
 function actualizarMonederoVisual() {
-    const dineroAMostrar = (jugador.dinero / 100).toFixed(2);
+    const dineroAMostrar = jugador.dinero
+    const dineroMostrarEuros = (jugador.dinero / 100).toFixed(2);
     document.getElementById("dineroSaco").textContent = dineroAMostrar;
 }

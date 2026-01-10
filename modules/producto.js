@@ -22,7 +22,9 @@ export class Producto {
     if (this.bonus.defensa) bonusTexto += "Defensa +" + this.bonus.defensa + " ";
     if (this.bonus.vida)    bonusTexto += "Vida +" + this.bonus.vida + " ";
 
-    return this.nombre + " [" + this.rareza + "] — " + this.formatearPrecio() + " — " + bonusTexto;
+    if (this.bonus.curacion) bonusTexto += "Curación +" + this.bonus.curacion + " ";
+
+    return this.nombre + " [" + this.rareza + "] — " + "Precio: " + this.precio + " — " + bonusTexto;
 }
 
     aplicarDescuento(porcentaje) {

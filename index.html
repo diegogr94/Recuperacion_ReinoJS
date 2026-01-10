@@ -27,20 +27,22 @@
             <div id="tarjeta-jugador-inicial" class="tarjeta-centro">
                 <form id="form-registro">
                     <div class="campo">
-                        <label>Nombre</label>
+                        <label>Nombre <span id="error-nombre" class="mensaje-error"></span></label>
                         <input type="text" id="reg-nombre" placeholder="Ej. Diego">
+                        
                     </div>
                     <div class="campo">
-                        <label>Ataque</label>
+                        <label>Ataque <span id="error-ataque" class="mensaje-error"></label>
                         <input type="number" id="reg-ataque" value="0" min="0">
                     </div>
                     <div class="campo">
-                        <label>Defensa</label>
+                        <label>Defensa <span id="error-defensa" class="mensaje-error"></span></label>
                         <input type="number" id="reg-defensa" value="0" min="0">
                     </div>
                     <div class="campo">
-                        <label>Vida</label>
-                        <input type="number" id="reg-vida" value="100">
+                        <label>Vida <span id="error-vida" class="mensaje-error"></label>
+                        <input type="number" id="reg-vida" value="100" min="100">
+                        
                     </div>
                 </form>
             </div>
@@ -67,7 +69,7 @@
 
             <section id="escena-mercado" class="escena">
                 <h2>Mercado Negro</h2>
-                <div class="info-oro">Dinero: <span id="oro-disponible">5.00</span>€</div>
+                <div class="info-oro">Dinero: <span id="oro-disponible">500</span>€</div>
 
                 <div id="contenedor-productos" class="grid-productos">
                 </div>

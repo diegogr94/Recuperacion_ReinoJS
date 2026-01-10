@@ -1,1 +1,1 @@
-export const REGEX_NOMBRE = /^[A-Z][a-zA-Z\s]{0,19}$/;
+export const REGEX_NOMBRE = /^[A-ZÁÉÍÓÚÑ][a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]{0,19}$/;
