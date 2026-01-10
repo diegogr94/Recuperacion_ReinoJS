@@ -369,7 +369,7 @@ console.log("VIDA TOTAL:", jugador.vidaTotal);
     
 
     document.getElementById('tarjeta-jugador-batalla').innerHTML = 
-        '<img src="./imagenes/caballero.png" class="img-duelo">' +
+        '<img src="./imagenes/caballero.jpg" class="img-duelo">' +
         '<h3>' + jugador.nombre + '</h3>' +
         '<p>❤️ Vida: ' + jugador.vida + '</p>';
 
