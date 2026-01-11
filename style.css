@@ -286,7 +286,7 @@ main {
 
 .tarjeta-enemigo {
     background-color: var(--primaryColor);
-    border: 2px solid var(--border-tarjetas);
+    border: 2px solid var(--textColor); 
     border-radius: 12px;
     padding: 20px;
     display: flex;
@@ -572,18 +572,34 @@ main {
     font-size: 0.9rem;
 }
 
+
+.luchador-lado {
+    transition: none; 
+}
+
+
 .luchador-lado.jugador-anim {
-    transform: translateX(-250%);
-    transition: transform 0.8s ease-out;
+    
+    transform: translateX(120vw); 
+    
+    z-index: 10; 
+    position: relative;
 }
 
 .luchador-lado.enemigo-anim {
-    transform: translateX(250%);
-    transition: transform 0.8s ease-out;
+   
+    transform: translateX(-120vw); 
+    
+    z-index: 1; 
+    position: relative;
 }
 
+
 .luchador-lado.entrar {
+    
     transform: translateX(0);
+  
+    transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 html,

@@ -359,13 +359,20 @@ function activarCascadaMonedas() {
     const posiciones = ['25%', '50%', '75%'];
     
 
-    let html = '';
-    posiciones.forEach(pos => {
-        html += `<img src="./imagenes/moneda.png" class="moneda_animacion" style="left: ${pos};">`;
-    });
+    
+    for (let pos of posiciones) {
+        
+        
+        let nuevaMoneda = document.createElement('img');
 
-    document.body.insertAdjacentHTML('beforeend', html);
+        
+        nuevaMoneda.src = './imagenes/moneda.png';       
+        nuevaMoneda.className = 'moneda_animacion';      
+        nuevaMoneda.style.left = pos;                    
 
+        
+        document.body.appendChild(nuevaMoneda);
+    }
     setTimeout(() => {
         const monedasActuales = document.querySelectorAll('.moneda_animacion');
         monedasActuales.forEach(m => m.remove());
@@ -420,7 +427,7 @@ console.log("VIDA TOTAL:", jugador.vidaTotal);
             botinMonedas = 10;
         }
         jugador.dinero += botinMonedas;
-        actualizarMonederoVisual();
+        
 
         let puntosGanados = 100 + rivalActual.ataque;
         
@@ -438,6 +445,7 @@ console.log("VIDA TOTAL:", jugador.vidaTotal);
         if (indiceCombate < enemigosBatalla.length - 1) {
             botonProximo.innerText = "Próximo Rival";
         } else {
+             
             botonProximo.innerText = "Ver Clasificación Final";
         }
     } else {
@@ -531,7 +539,7 @@ function mostrarRankingHistorico() {
 
     showScene('escena-ranking');
 
-    actualizarMonederoVisual();
+    
 }
 
 
