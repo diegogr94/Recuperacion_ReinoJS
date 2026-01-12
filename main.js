@@ -6,9 +6,16 @@ import { Enemigo, JefeFinal } from './modules/enemigos.js';
 import { batalla } from './modules/ranking.js';
 
 
+/** @type {Jugador} Instancia del jugador actual. */
 let jugador;
+
+/** @type {Array<Object>} Lista temporal de productos seleccionados en el mercado. */
 let cesta = [];
+
+/** @type {Array<Enemigo|JefeFinal>} Lista de enemigos a vencer en la secuencia de batalla. */
 let enemigosBatalla = [];
+
+/** @type {number} Índice del enemigo actual contra el que se está luchando. */
 let indiceCombate = 0;
 
 const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
@@ -16,25 +23,33 @@ const ERROR_EXCESO = "La suma total pasa de 110.";
 const ERROR_NEGATIVO = "No puede ser negativo.";
 
 
+/**
+ * Inicialización de la aplicación cuando la ventana carga.
+ * Carga datos de prueba en localStorage si está vacío y asigna eventos iniciales.
+ */
 window.onload = () => {
 
+    /**
+     * Comprueba si existe un ranking en localStorage. 
+     * Si no existe, inyecta un set de datos de prueba para que la tabla no esté vacía.
+     */
     function cargarDatosPrueba() {
         const rankingExistente = localStorage.getItem('ranking_final');
 
         if (!rankingExistente || JSON.parse(rankingExistente).length === 0) {
             const datosPrueba = [
-                { idNombre: "sdafsdf", idPuntos: 950, idDinero: 450, idFecha: "01/01/2026" },
-                { idNombre: "dfgsdf", idPuntos: 840, idDinero: 120, idFecha: "01/01/2026" },
-                { idNombre: "fdgdfsg", idPuntos: 120, idDinero: 40, idFecha: "02/01/2026" },
-                { idNombre: "dfgsdfg", idPuntos: 1100, idDinero: 600, idFecha: "02/01/2026" },
-                { idNombre: "sdfdsf", idPuntos: 750, idDinero: 300, idFecha: "02/01/2026" },
-                { idNombre: "asdasd", idPuntos: 640, idDinero: 160, idFecha: "02/01/2026" },
-                { idNombre: "asdfdsaf", idPuntos: 500, idDinero: 100, idFecha: "02/01/2026" },
-                { idNombre: "sdfsdf", idPuntos: 990, idDinero: 200, idFecha: "02/01/2026" },
-                { idNombre: "sdfsadf", idPuntos: 430, idDinero: 90, idFecha: "02/01/2026" },
-                { idNombre: "dsfsdaf", idPuntos: 880, idDinero: 350, idFecha: "02/01/2026" },
-                { idNombre: "sdfdsf", idPuntos: 320, idDinero: 50, idFecha: "02/01/2026" },
-                { idNombre: "sadfsdfdsf", idPuntos: 1050, idDinero: 500, idFecha: "02/01/2026" }
+                { idNombre: "Rodas", idPuntos: 950, idDinero: 450, idFecha: "01/01/2026" },
+                { idNombre: "Lucía", idPuntos: 840, idDinero: 120, idFecha: "01/01/2026" },
+                { idNombre: "Gloria", idPuntos: 120, idDinero: 40, idFecha: "02/01/2026" },
+                { idNombre: "Elías", idPuntos: 1100, idDinero: 600, idFecha: "02/01/2026" },
+                { idNombre: "Ronic", idPuntos: 750, idDinero: 300, idFecha: "02/01/2026" },
+                { idNombre: "Adri", idPuntos: 640, idDinero: 160, idFecha: "02/01/2026" },
+                { idNombre: "Rebeca", idPuntos: 500, idDinero: 100, idFecha: "02/01/2026" },
+                { idNombre: "Miguel", idPuntos: 990, idDinero: 200, idFecha: "02/01/2026" },
+                { idNombre: "Ángel", idPuntos: 430, idDinero: 90, idFecha: "02/01/2026" },
+                { idNombre: "Paco Mera", idPuntos: 880, idDinero: 350, idFecha: "02/01/2026" },
+                { idNombre: "Pablo", idPuntos: 320, idDinero: 50, idFecha: "02/01/2026" },
+                { idNombre: "Gabino", idPuntos: 1050, idDinero: 500, idFecha: "02/01/2026" }
             ];
 
             localStorage.setItem('ranking_final', JSON.stringify(datosPrueba));
@@ -48,14 +63,19 @@ window.onload = () => {
     document.getElementById('btn-ir-jugador').onclick = validarYCrearJugador;
 };
 
+/**
+ * Lee los valores del formulario de creación, valida las restricciones
+ * (nombre regex, stats no negativos, suma total <= 110) e instancia al Jugador.
+ * Si todo es correcto, avanza a la siguiente escena.
+ */
 function validarYCrearJugador() {
     const nombreInput = document.getElementById('reg-nombre').value;
     const nombre = nombreInput.trim();
 
     const spanNombre = document.getElementById('error-nombre');
-    const spanAtaque = document.getElementById('error-ataque');   // Recuperado
-    const spanDefensa = document.getElementById('error-defensa'); // Recuperado
-    const spanVida = document.getElementById('error-vida');       // Aquí mostramos error de vida y suma
+    const spanAtaque = document.getElementById('error-ataque');   
+    const spanDefensa = document.getElementById('error-defensa'); 
+    const spanVida = document.getElementById('error-vida');       
 
     // 2. LIMPIAR MENSAJES
     spanNombre.textContent = "";
@@ -111,6 +131,9 @@ function validarYCrearJugador() {
     cargarEscenaResumenJugador();
 }
 
+/**
+ * Muestra la escena con el resumen inicial de las estadísticas del jugador.
+ */
 function cargarEscenaResumenJugador() {
 
     document.getElementById('mostrarNombre').innerText = jugador.nombre;
@@ -130,6 +153,11 @@ function cargarEscenaResumenJugador() {
 }
 
 
+/**
+ * Actualiza la visualización del inventario en el DOM.
+ * Rellena los huecos vacíos con las imágenes de los items pasados por parámetro.
+ * @param {Array<Object>} listaAMostrar - Lista de productos a renderizar.
+ */
 function refrescarInventarioVisual(listaAMostrar) {
     var todosLosHuecos = document.querySelectorAll('.espacio-inventario');
 
@@ -157,11 +185,21 @@ function refrescarInventarioVisual(listaAMostrar) {
 }
 
 
+/**
+ * Wrapper para refrescar el inventario visualmente usando la cesta temporal de compra.
+ * @param {Array<Object>} laCesta - Array de productos actualmente en la cesta.
+ */
 function refrescarInventarioTemporal(laCesta) {
     refrescarInventarioVisual(laCesta);
 }
 
 
+/**
+ * Prepara y muestra la escena del mercado.
+ * - Genera una rareza aleatoria para ofertas.
+ * - Aplica descuentos.
+ * - Crea las tarjetas de productos en el DOM.
+ */
 function cargarEscenaMercado() {
     const escaparate = document.getElementById('contenedor-productos');
     if (!escaparate) return;
@@ -175,10 +213,10 @@ function cargarEscenaMercado() {
 
     const productosEnVenta = aplicarDescuentoPorRareza(rarezaEnOferta, 10);
 
-    console.log("Oferta del día aplicada a la rareza: " + rarezaEnOferta);
+    console.log("Oferta aplicada a la rareza: " + rarezaEnOferta);
 
-    for (var i = 0; i < productosEnVenta.length; i++) {
-        var objeto = productosEnVenta[i];
+    for (let i = 0; i < productosEnVenta.length; i++) {
+        let objeto = productosEnVenta[i];
 
         const tarjeta = document.createElement('div');
         tarjeta.className = 'tarjeta-producto';
@@ -210,11 +248,9 @@ function cargarEscenaMercado() {
 
         const boton = tarjeta.querySelector('.boton-accion');
 
-        (function (prod, tarj, btn) {
-            btn.onclick = function () {
-                gestionarCesta(prod, tarj, btn);
-            };
-        })(objeto, tarjeta, boton);
+        boton.onclick = function () {
+        gestionarCesta(objeto, tarjeta, boton);
+    };
 
         escaparate.appendChild(tarjeta);
     }
@@ -223,6 +259,14 @@ function cargarEscenaMercado() {
     document.getElementById('btn-confirmar-compra').onclick = confirmarCompra;
 }
 
+/**
+ * Añade o quita un producto de la cesta de la compra.
+ * Actualiza el dinero disponible y cambia el estado visual del botón (Añadir/Retirar).
+ *
+ * @param {Object} producto - El objeto del producto a gestionar.
+ * @param {HTMLElement} tarjetaVisual - El elemento DOM de la tarjeta del producto.
+ * @param {HTMLButtonElement} elBoton - El botón pulsado para cambiar su texto.
+ */
 function gestionarCesta(producto, tarjetaVisual, elBoton) {
 
     var yaLoTengo = false;
@@ -266,6 +310,11 @@ function gestionarCesta(producto, tarjetaVisual, elBoton) {
 }
 
 
+/**
+ * Confirma la compra de los objetos en la cesta.
+ * Transfiere los objetos al inventario real del jugador y limpia la cesta.
+ * Pasa a la escena de resumen actualizado.
+ */
 function confirmarCompra() {
     if (cesta.length === 0) {
         alert("No has seleccionado ningún objeto.");
@@ -282,6 +331,10 @@ function confirmarCompra() {
 }
 
 
+/**
+ * Carga la escena posterior a la compra, mostrando las estadísticas actualizadas del jugador
+ * tras adquirir items (ataque total, defensa total, etc.).
+ */
 function cargarEscena4() {
 
     document.getElementById('nombre-actualizado').innerText = jugador.nombre;
@@ -302,16 +355,27 @@ function cargarEscena4() {
 }
 
 
+/**
+ * Devuelve la ruta de la imagen según el nombre del enemigo.
+ * @param {string} nombre - Nombre del enemigo.
+ * @returns {string} Ruta al archivo de imagen.
+ */
 function obtenerImagenEnemigo(nombre) {
     const mapaEnemigos = {
         'Troll': './imagenes/troll.png',
         'Minotauro': './imagenes/minotauro.png',
         'Mago': './imagenes/mago.png'
     };
-    return mapaEnemigos[nombre] || './imagenes/enemigo_generico.jpg';
+    return mapaEnemigos[nombre] || './imagenes/troll.png';
 }
 
 
+/**
+ * Prepara la escena de batalla.
+ * - Instancia los enemigos (Troll, Minotauro, Mago Jefe).
+ * - Renderiza las tarjetas de los enemigos.
+ * - Prepara el botón para iniciar el combate secuencial.
+ */
 function cargarEscenaEnemigos() {
 
     const contenedor = document.getElementById('contenedor-enemigos');
@@ -351,6 +415,10 @@ function cargarEscenaEnemigos() {
 }
 
 
+/**
+ * Crea un efecto visual de monedas cayendo en la pantalla.
+ * Elimina los elementos DOM creados después de 1.5 segundos.
+ */
 function activarCascadaMonedas() {
 
     const monedasViejas = document.querySelectorAll('.moneda_animacion');
@@ -379,6 +447,13 @@ function activarCascadaMonedas() {
     }, 1500);
 }
 
+/**
+ * Ejecuta la lógica de un combate individual contra el enemigo actual (según `indiceCombate`).
+ * - Llama a la función lógica de `batalla`.
+ * - Actualiza el DOM con el resultado y la vida restante.
+ * - Gestiona el loot (monedas y puntos) si se gana.
+ * - Controla el flujo hacia el siguiente enemigo o la pantalla final.
+ */
 function ejecutarDueloSecuencial() {
 
     console.log("ATAQUE TOTAL:", jugador.ataqueTotal);
@@ -470,6 +545,10 @@ function ejecutarDueloSecuencial() {
     };
 }
 
+/**
+ * Calcula la calificación final (Pro/Rookie) y guarda el resultado en localStorage.
+ * Muestra la escena con el diploma final.
+ */
 function mostrarCalificacion() {
     var puntosFinalesTotales = jugador.puntos + jugador.dinero;
     var esPro = puntosFinalesTotales >= 300;
@@ -496,7 +575,7 @@ function mostrarCalificacion() {
 
     var zonaRango = document.getElementById('contenedorProRookie');
     zonaRango.innerHTML = '<h2>Resultado Final</h2>' +
-        '<div class="caja-registro">' +
+        '<div class="caja-diploma">' +
         '<h3>Nivel obtenido: ' + calificacion + '</h3>' +
         '<p>Puntuación Total (Batallas + Oro): ' + puntosFinalesTotales + '</p>' +
         '</div>' +
@@ -507,6 +586,10 @@ function mostrarCalificacion() {
 }
 
 
+/**
+ * Carga el historial de partidas desde localStorage, lo ordena por puntuación
+ * y renderiza una tabla HTML con los resultados.
+ */
 function mostrarRankingHistorico() {
     var almacen = JSON.parse(localStorage.getItem('ranking_final')) || [];
 
@@ -548,6 +631,9 @@ function mostrarRankingHistorico() {
 }
 
 
+/**
+ * Actualiza el contador de dinero en el header de la interfaz.
+ */
 function actualizarMonederoVisual() {
     const dineroAMostrar = jugador.dinero
     const dineroMostrarEuros = (jugador.dinero / 100).toFixed(2);

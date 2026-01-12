@@ -7,7 +7,7 @@
     --fuente-titulo-grande: 70px;
     --fuente-label-registro: 30px;
 
-    --tamaño-retrato-heroe: 150px;
+    --tamaño-imagen-jugador: 150px;
     --tamaño-retrato-batalla: 150px;
     --tamaño-img-producto: 120px;
     --tamaño-img-enemigo: 150px;
@@ -162,9 +162,9 @@ main {
     padding: 20px 40px;
 }
 
-.retrato-heroe {
-    width: var(--tamaño-retrato-heroe);
-    height: var(--tamaño-retrato-heroe);
+.imagen-jugador {
+    width: var(--tamaño-imagen-jugador);
+    height: var(--tamaño-imagen-jugador);
     border: 3px solid var(secundaryColor);
     background-color: var(----primaryColor);
 }
@@ -390,7 +390,7 @@ main {
     color: var(secundaryColor);
 }
 
-.caja-registro {
+.caja-diploma {
     background-color: var(--primaryColor);
     border: 2px solid var(--textColor);
     padding: 30px;
@@ -402,12 +402,12 @@ main {
 
 }
 
-.caja-registro h3 {
+.caja-diploma h3 {
     font-size: 2rem;
     margin-bottom: 10px;
 }
 
-.caja-registro p {
+.caja-diploma p {
     font-size: 1.3rem;
     font-weight: bold;
 }
@@ -639,7 +639,7 @@ main {
 
         
         --fuente-titulo-grande: 1.8rem;
-        --tamaño-retrato-heroe: 70px;
+        --tamaño-imagen-jugador: 70px;
         --card-padding: 8px;
 
         --tamaño-img-producto: 60px;
