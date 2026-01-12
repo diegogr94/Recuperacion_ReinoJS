@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/enemigos.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/enemigos.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Clase base que representa a un enemigo en el juego.
+ */
+export class Enemigo {
+    /** @type {string} El tipo de entidad (ej: 'enemigo'). */
+    tipo;
+    /** @type {string} El nombre del enemigo. */
+    nombre;
+    /** @type {number} Los puntos de ataque del enemigo. */
+    ataque;
+    /** @type {number} Los puntos de vida actuales del enemigo. */
+    vida;
+
+    /**
+     * Crea una instancia de un Enemigo.
+     * @param {string} nombre - El nombre del enemigo.
+     * @param {number} ataque - Puntos de daño que realiza.
+     * @param {number} vida - Puntos de salud.
+     */
+    constructor(nombre, ataque, vida) {
+        this.tipo = 'enemigo'; 
+        this.nombre = nombre;
+        this.ataque = ataque;
+        this.vida = vida;
+    }
+
+    /**
+     * Devuelve una representación en cadena del enemigo con sus estadísticas.
+     * @returns {string} Cadena formateada con icono, nombre, ataque y vida.
+     */
+    mostrarEnemigo() {
+        return "🗡️ " + this.nombre + " (ATQ " + this.ataque + ", HP " + this.vida + ")";
+    }
+}
+
+
+/**
+ * Clase que representa a un Jefe Final, que hereda de Enemigo.
+ * Incluye habilidades especiales y multiplicadores de daño.
+ */
+export class JefeFinal extends Enemigo {
+    /** @type {string} Descripción de la habilidad especial del jefe. */
+    habilidadEspecial;
+    /** @type {number} Multiplicador aplicado (por defecto 1.3). */
+    multiplicador;
+
+    /**
+     * Crea una instancia de un Jefe Final.
+     * @param {string} nombre - El nombre del jefe.
+     * @param {number} ataque - Puntos de ataque base.
+     * @param {number} vida - Puntos de salud base.
+     * @param {string} habilidadEspecial - Nombre o descripción de su habilidad única.
+     * @param {number} [multiplicador=1.3] - Factor multiplicador de poder (opcional, por defecto 1.3).
+     */
+    constructor(nombre, ataque, vida, habilidadEspecial, multiplicador = 1.3) {
+        super(nombre, ataque, vida);
+        this.tipo = 'jefe'; 
+        this.habilidadEspecial = habilidadEspecial;
+        this.multiplicador = multiplicador;
+    }
+
+    /**
+     * Devuelve una representación en cadena del jefe, incluyendo su habilidad especial.
+     * @returns {string} Cadena formateada con icono, nombre, estadísticas y habilidad.
+     */
+    mostrarEnemigo() {
+        return "🐲 " + this.nombre + " (ATQ " + this.ataque + ", HP " + this.vida + ") — Habilidad: " + this.habilidadEspecial;
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Enemigo.html">Enemigo</a></li><li><a href="JefeFinal.html">JefeFinal</a></li><li><a href="Jugador.html">Jugador</a></li><li><a href="Producto.html">Producto</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EUR">EUR</a></li><li><a href="global.html#REGEX_NOMBRE">REGEX_NOMBRE</a></li><li><a href="global.html#activarCascadaMonedas">activarCascadaMonedas</a></li><li><a href="global.html#actualizarMonederoVisual">actualizarMonederoVisual</a></li><li><a href="global.html#agruparPorNivel">agruparPorNivel</a></li><li><a href="global.html#aplicarDescuentoPorRareza">aplicarDescuentoPorRareza</a></li><li><a href="global.html#batalla">batalla</a></li><li><a href="global.html#buscarProducto">buscarProducto</a></li><li><a href="global.html#cargarEscena4">cargarEscena4</a></li><li><a href="global.html#cargarEscenaEnemigos">cargarEscenaEnemigos</a></li><li><a href="global.html#cargarEscenaMercado">cargarEscenaMercado</a></li><li><a href="global.html#cargarEscenaResumenJugador">cargarEscenaResumenJugador</a></li><li><a href="global.html#cesta">cesta</a></li><li><a href="global.html#confirmarCompra">confirmarCompra</a></li><li><a href="global.html#ejecutarDueloSecuencial">ejecutarDueloSecuencial</a></li><li><a href="global.html#enemigosBatalla">enemigosBatalla</a></li><li><a href="global.html#gestionarCesta">gestionarCesta</a></li><li><a href="global.html#groupBy">groupBy</a></li><li><a href="global.html#indiceCombate">indiceCombate</a></li><li><a href="global.html#jugador">jugador</a></li><li><a href="global.html#mercado">mercado</a></li><li><a href="global.html#mostrarCalificacion">mostrarCalificacion</a></li><li><a href="global.html#mostrarRanking">mostrarRanking</a></li><li><a href="global.html#mostrarRankingHistorico">mostrarRankingHistorico</a></li><li><a href="global.html#obtenerImagenEnemigo">obtenerImagenEnemigo</a></li><li><a href="global.html#obtenerRarezaAleatoria">obtenerRarezaAleatoria</a></li><li><a href="global.html#refrescarInventarioTemporal">refrescarInventarioTemporal</a></li><li><a href="global.html#refrescarInventarioVisual">refrescarInventarioVisual</a></li><li><a href="global.html#showScene">showScene</a></li><li><a href="global.html#validarYCrearJugador">validarYCrearJugador</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Mon Jan 12 2026 13:34:52 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
