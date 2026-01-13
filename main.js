@@ -18,6 +18,8 @@ let enemigosBatalla = [];
 /** @type {number} Índice del enemigo actual contra el que se está luchando. */
 let indiceCombate = 0;
 
+let oroGanadoEnBatallas = 0;
+
 const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
 const ERROR_EXCESO = "La suma total pasa de 110.";
 const ERROR_NEGATIVO = "No puede ser negativo.";
@@ -396,6 +398,8 @@ function obtenerImagenEnemigo(nombre) {
  */
 function cargarEscenaEnemigos() {
 
+    oroGanadoEnBatallas = 0;
+
     const contenedor = document.getElementById('contenedor-enemigos');
 
     contenedor.innerHTML = "";
@@ -520,6 +524,7 @@ function ejecutarDueloSecuencial() {
             botinMonedas = 10;
         }
         jugador.dinero += botinMonedas;
+        oroGanadoEnBatallas += botinMonedas;
 
 
         let puntosGanados = 100 + rivalActual.ataque;
@@ -542,8 +547,8 @@ function ejecutarDueloSecuencial() {
             botonProximo.innerText = "Ver Clasificación Final";
         }
     } else {
-        areaTexto.innerHTML = '<h3>GAME OVER</h3>';
-        botonProximo.innerText = "Reintentar";
+        areaTexto.innerHTML = '<h3> GAME OVER </h3>';
+        botonProximo.innerText = "Ver Clasificación Final";
     }
 
     showScene('escena-batalla');
@@ -551,14 +556,14 @@ function ejecutarDueloSecuencial() {
 
     botonProximo.onclick = () => {
         if (!combateFinalizadoOk) {
-            location.reload();
+            mostrarCalificacion(false);
         } else if (indiceCombate < enemigosBatalla.length - 1) {
             indiceCombate++;
             botonProximo.classList.add('oculto');
             ejecutarDueloSecuencial();
         } else {
 
-            mostrarCalificacion();
+            mostrarCalificacion(true);
         }
     };
 }
@@ -567,10 +572,21 @@ function ejecutarDueloSecuencial() {
  * Calcula la calificación final (Pro/Rookie) y guarda el resultado en localStorage.
  * Muestra la escena con el diploma final.
  */
-function mostrarCalificacion() {
-    var puntosFinalesTotales = jugador.puntos + jugador.dinero;
+function mostrarCalificacion(esVictoriaTotal) {
+
+var puntosFinalesTotales = 0;
+
+    if (esVictoriaTotal) {
+        
+        puntosFinalesTotales = jugador.puntos + jugador.dinero;
+    } else {
+        
+        puntosFinalesTotales = jugador.puntos + oroGanadoEnBatallas;
+    }
+
+    
     var esPro = puntosFinalesTotales >= 300;
-    var calificacion = esPro ? '🥇 PRO' : '🥉 ROOKIE';
+    var calificacion = esPro ? 'PRO' : 'ROOKIE';
 
     if (esPro) {
         confetti({
@@ -595,7 +611,7 @@ function mostrarCalificacion() {
     zonaRango.innerHTML = '<h2>Resultado Final</h2>' +
         '<div class="caja-diploma">' +
         '<h3>Nivel obtenido: ' + calificacion + '</h3>' +
-        '<p>Puntuación Total (Batallas + Oro): ' + puntosFinalesTotales + '</p>' +
+        '<p>Puntuación Total: ' + puntosFinalesTotales + '</p>' +
         '</div>' +
         '<button id="btn-ir-ranking" class="btn-primario">Ver Clasificación</button>';
 
