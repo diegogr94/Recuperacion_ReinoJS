@@ -18,6 +18,7 @@ let enemigosBatalla = [];
 /** @type {number} Índice del enemigo actual contra el que se está luchando. */
 let indiceCombate = 0;
 
+/** @type {number}  Acumulador de la cantidad total de oro ganado únicamente en las batallas. */
 let oroGanadoEnBatallas = 0;
 
 const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
