@@ -77,7 +77,7 @@ function validarYCrearJugador() {
     const spanDefensa = document.getElementById('error-defensa'); 
     const spanVida = document.getElementById('error-vida');       
 
-    // 2. LIMPIAR MENSAJES
+    
     spanNombre.textContent = "";
     spanAtaque.textContent = "";
     spanDefensa.textContent = "";
@@ -284,6 +284,24 @@ function gestionarCesta(producto, tarjetaVisual, elBoton) {
 
             tarjetaVisual.style.backgroundColor = "orange";
             elBoton.innerText = "Retirar";
+
+            
+const icono = document.createElement('img');
+
+
+icono.src = './imagenes/cart.svg'; 
+
+icono.alt = 'Icono compra'; 
+icono.className = 'carrito-flotante'; 
+
+
+elBoton.appendChild(icono);
+
+
+setTimeout(() => {
+    icono.remove();
+}, 800);
+
         } else {
             alert("¡No tienes oro suficiente!");
         }

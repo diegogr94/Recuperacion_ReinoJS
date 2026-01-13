@@ -49,7 +49,7 @@ export class Producto {
 
     if (this.bonus.curacion) bonusTexto += "Curación +" + this.bonus.curacion + " ";
 
-    return this.nombre + " [" + this.rareza + "] — " + "Precio: " + this.precio + " — " + bonusTexto;
+    return this.nombre + " [" + this.rareza + "] " + "<br>Precio: " + this.precio + "<br>  " + bonusTexto;
 }
 
     /**

@@ -217,8 +217,43 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: transform 0.3s ease;
 
 }
+
+.tarjeta-producto:hover {
+    transform: scale(1.05); 
+    cursor: pointer;        
+    z-index: 10;            
+    box-shadow: 0 10px 20px rgb(0, 0, 0); 
+}
+
+
+
+@keyframes subirYDesvanecer {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(1); 
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -40px) scale(1.5); 
+    }
+}
+
+
+
+.carrito-flotante {
+    position: absolute;
+    left: 50%;
+    top: -30px;  
+    width: 30px;  
+    height: auto; 
+    pointer-events: none;
+    z-index: 100;
+    animation: subirYDesvanecer 0.8s ease-out forwards;
+}
+
 
 .img-producto {
     width: var(--tamaño-img-producto);
@@ -237,6 +272,7 @@ main {
     font-weight: bold;
     cursor: pointer;
     flex-shrink: 0;
+    position: relative;
 }
 
 .btn-primario:hover {
