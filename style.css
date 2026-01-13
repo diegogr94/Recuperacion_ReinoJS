@@ -85,9 +85,6 @@ main {
     display: none;
 }
 .mensaje-error {
-    .mensaje-error:empty {
-    display: none;
-}
     
     color: var(--secondaryAccentColor);            
     
