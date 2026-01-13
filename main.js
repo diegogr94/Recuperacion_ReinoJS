@@ -418,7 +418,7 @@ function cargarEscenaEnemigos() {
             '<img src="' + rutaImg + '" alt="' + enemigo.nombre + '" class="img-enemigo">' +
             '<div class="info-enemigo">' +
             '<p>' + enemigo.nombre + '</p>' +
-            '<p>' + enemigo.ataque + ' puntos de ataque</p>' +
+            '<p>' + "Ataque" + " +" + enemigo.ataque + '</p>' + 
             '</div>';
 
         contenedor.appendChild(div);
