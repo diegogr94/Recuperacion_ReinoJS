@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/jugadores.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/jugadores.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { groupBy } from '../utils/utils.js'; 
+
+/**
+ * Clase que representa al jugador principal del juego.
+ * Gestiona sus estadísticas, inventario, dinero y puntuación.
+ */
+export class Jugador {
+  
+  /**
+   * Crea una instancia del Jugador.
+   * @param {string} nombre - El nombre del personaje.
+   * @param {number} ataque - Puntos de ataque base iniciales.
+   * @param {number} defensa - Puntos de defensa base iniciales.
+   * @param {number} vida - Puntos de vida máxima iniciales.
+   */
+  constructor(nombre, ataque, defensa, vida) {
+    /** @type {string} */
+    this.nombre = nombre;
+    /** @type {number} */
+    this.ataqueBase = ataque;   
+    /** @type {number} */
+    this.defensaBase = defensa; 
+    /** @type {number} */
+    this.vidaMax = vida;        
+    /** @type {number} */
+    this.vida = vida;
+    /** @type {number} */
+    this.puntos = 0;
+    /** @type {number} */
+    this.dinero = 500; 
+    /** @type {Array&lt;Object>} Lista de items poseídos. */
+    this.inventario = [];
+  }
+
+  /**
+   * Añade un item al inventario y aplica efectos inmediatos si es necesario.
+   * @param {Object} item - El objeto a añadir.
+   * @param {string} item.tipo - El tipo de objeto ('arma', 'armadura', 'consumible').
+   * @param {Object} item.bonus - Objeto con los bonificadores (ataque, defensa, curacion).
+   */
+  añadirItem(item) {
+    this.inventario.push(structuredClone(item));
+    if (item.tipo === 'consumible' &amp;&amp; item.bonus.curacion) {
+        this.vida += item.bonus.curacion;
+  }
+  }
+
+  /**
+   * Suma puntos a la puntuación actual del jugador.
+   * @param {number} cantidad - La cantidad de puntos a añadir.
+   */
+  ganarPuntos(cantidad) {
+    this.puntos += cantidad;
+  }
+
+  /**
+   * Obtiene el ataque total sumando la base y los bonus de las armas en el inventario.
+   * @returns {number} El valor total de ataque.
+   */
+  get ataqueTotal() {
+    let totalBonus = 0;
+    for (let i = 0; i &lt; this.inventario.length; i++) {
+      let item = this.inventario[i];
+      if (item.tipo === 'arma' &amp;&amp; item.bonus.ataque) {
+        totalBonus += item.bonus.ataque;
+      }
+    }
+    return this.ataqueBase + totalBonus; 
+  }
+
+  /**
+   * Obtiene la defensa total sumando la base y los bonus de las armaduras en el inventario.
+   * @returns {number} El valor total de defensa.
+   */
+  get defensaTotal() {
+    let totalBonus = 0;
+    for (let i = 0; i &lt; this.inventario.length; i++) {
+      let item = this.inventario[i];
+      if (item.tipo === 'armadura' &amp;&amp; item.bonus.defensa) {
+        totalBonus += item.bonus.defensa;
+      }
+    }
+    return this.defensaBase + totalBonus; 
+  }
+
+  /**
+   * Obtiene la vida total calculada (base + consumibles de curación en inventario).
+   * @returns {number} El valor total de vida calculada.
+   */
+  get vidaTotal() {
+    let totalBonus = 0;
+    for (let i = 0; i &lt; this.inventario.length; i++) {
+      let item = this.inventario[i];
+      if (item.tipo === 'consumible' &amp;&amp; item.bonus.curacion) {
+        totalBonus += item.bonus.curacion;
+      }
+    }
+    return this.vidaMax + totalBonus; 
+  }
+
+  /**
+   * Agrupa los elementos del inventario según su tipo.
+   * @returns {Object} Un objeto donde las claves son los tipos y los valores son arrays de items.
+   */
+  inventarioPorTipo() {
+    return groupBy(this.inventario, item => item.tipo);
+  }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Enemigo.html">Enemigo</a></li><li><a href="JefeFinal.html">JefeFinal</a></li><li><a href="Jugador.html">Jugador</a></li><li><a href="Producto.html">Producto</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EUR">EUR</a></li><li><a href="global.html#REGEX_NOMBRE">REGEX_NOMBRE</a></li><li><a href="global.html#activarCascadaMonedas">activarCascadaMonedas</a></li><li><a href="global.html#actualizarMonederoVisual">actualizarMonederoVisual</a></li><li><a href="global.html#agruparPorNivel">agruparPorNivel</a></li><li><a href="global.html#aplicarDescuentoPorRareza">aplicarDescuentoPorRareza</a></li><li><a href="global.html#batalla">batalla</a></li><li><a href="global.html#buscarProducto">buscarProducto</a></li><li><a href="global.html#cargarEscena4">cargarEscena4</a></li><li><a href="global.html#cargarEscenaEnemigos">cargarEscenaEnemigos</a></li><li><a href="global.html#cargarEscenaMercado">cargarEscenaMercado</a></li><li><a href="global.html#cargarEscenaResumenJugador">cargarEscenaResumenJugador</a></li><li><a href="global.html#cesta">cesta</a></li><li><a href="global.html#confirmarCompra">confirmarCompra</a></li><li><a href="global.html#ejecutarDueloSecuencial">ejecutarDueloSecuencial</a></li><li><a href="global.html#enemigosBatalla">enemigosBatalla</a></li><li><a href="global.html#gestionarCesta">gestionarCesta</a></li><li><a href="global.html#groupBy">groupBy</a></li><li><a href="global.html#indiceCombate">indiceCombate</a></li><li><a href="global.html#jugador">jugador</a></li><li><a href="global.html#mercado">mercado</a></li><li><a href="global.html#mostrarCalificacion">mostrarCalificacion</a></li><li><a href="global.html#mostrarRanking">mostrarRanking</a></li><li><a href="global.html#mostrarRankingHistorico">mostrarRankingHistorico</a></li><li><a href="global.html#obtenerImagenEnemigo">obtenerImagenEnemigo</a></li><li><a href="global.html#obtenerRarezaAleatoria">obtenerRarezaAleatoria</a></li><li><a href="global.html#oroGanadoEnBatallas">oroGanadoEnBatallas</a></li><li><a href="global.html#refrescarInventarioTemporal">refrescarInventarioTemporal</a></li><li><a href="global.html#refrescarInventarioVisual">refrescarInventarioVisual</a></li><li><a href="global.html#showScene">showScene</a></li><li><a href="global.html#validarYCrearJugador">validarYCrearJugador</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Jan 14 2026 00:24:21 GMT+0100 (hora estándar de Europa central)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
