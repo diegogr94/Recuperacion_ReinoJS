@@ -503,8 +503,8 @@ main {
 
 #contenedorMonedero {
     position: fixed;
-    left: 20px;
-    bottom: 20px;
+    left: 2vw;    
+    bottom: 1vh;
     width: var(--ancho-monedero);
     z-index: 1000;
     display: flex;
