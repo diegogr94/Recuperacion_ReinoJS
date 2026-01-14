@@ -46,8 +46,12 @@ let enemigosBatalla = [];
 /** @type {number} Índice del enemigo actual contra el que se está luchando. */
 let indiceCombate = 0;
 
-/** @type {number}  Acumulador de la cantidad total de oro ganado únicamente en las batallas. */
-let oroGanadoEnBatallas = 0;
+/**
+ * Almacena la cantidad de dinero que tenía el jugador justo antes de comenzar la secuencia de combates.
+ * Se utiliza para comparar y calcular el oro total ganado.
+ * @type {number}
+ */
+let dineroAntesDeBatallas = 0;
 
 const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
 const ERROR_EXCESO = "La suma total pasa de 110.";
@@ -427,7 +431,9 @@ function obtenerImagenEnemigo(nombre) {
  */
 function cargarEscenaEnemigos() {
 
-    oroGanadoEnBatallas = 0;
+    dineroAntesDeBatallas = jugador.dinero;
+
+  
 
     const contenedor = document.getElementById('contenedor-enemigos');
 
@@ -553,7 +559,7 @@ function ejecutarDueloSecuencial() {
             botinMonedas = 10;
         }
         jugador.dinero += botinMonedas;
-        oroGanadoEnBatallas += botinMonedas;
+        
 
 
         let puntosGanados = 100 + rivalActual.ataque;
@@ -585,14 +591,14 @@ function ejecutarDueloSecuencial() {
 
     botonProximo.onclick = () => {
         if (!combateFinalizadoOk) {
-            mostrarCalificacion(false);
+            mostrarCalificacion();
         } else if (indiceCombate &lt; enemigosBatalla.length - 1) {
             indiceCombate++;
             botonProximo.classList.add('oculto');
             ejecutarDueloSecuencial();
         } else {
 
-            mostrarCalificacion(true);
+            mostrarCalificacion();
         }
     };
 }
@@ -601,16 +607,24 @@ function ejecutarDueloSecuencial() {
  * Calcula la calificación final (Pro/Rookie) y guarda el resultado en localStorage.
  * Muestra la escena con el diploma final.
  */
-function mostrarCalificacion(esVictoriaTotal) {
+function mostrarCalificacion() {
 
 var puntosFinalesTotales = 0;
 
-    if (esVictoriaTotal) {
-        
+    if (jugador.vida > 0) {
+     
         puntosFinalesTotales = jugador.puntos + jugador.dinero;
-    } else {
+      
+        if (puntosFinalesTotales >= 300) {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+    } 
+    else {
         
-        puntosFinalesTotales = jugador.puntos + oroGanadoEnBatallas;
+        let soloBotin = Math.max(0, jugador.dinero - dineroAntesDeBatallas);
+       
+        puntosFinalesTotales = jugador.puntos + soloBotin;
+        
     }
 
     
@@ -711,13 +725,13 @@ function actualizarMonederoVisual() {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Enemigo.html">Enemigo</a></li><li><a href="JefeFinal.html">JefeFinal</a></li><li><a href="Jugador.html">Jugador</a></li><li><a href="Producto.html">Producto</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EUR">EUR</a></li><li><a href="global.html#REGEX_NOMBRE">REGEX_NOMBRE</a></li><li><a href="global.html#activarCascadaMonedas">activarCascadaMonedas</a></li><li><a href="global.html#actualizarMonederoVisual">actualizarMonederoVisual</a></li><li><a href="global.html#agruparPorNivel">agruparPorNivel</a></li><li><a href="global.html#aplicarDescuentoPorRareza">aplicarDescuentoPorRareza</a></li><li><a href="global.html#batalla">batalla</a></li><li><a href="global.html#buscarProducto">buscarProducto</a></li><li><a href="global.html#cargarEscena4">cargarEscena4</a></li><li><a href="global.html#cargarEscenaEnemigos">cargarEscenaEnemigos</a></li><li><a href="global.html#cargarEscenaMercado">cargarEscenaMercado</a></li><li><a href="global.html#cargarEscenaResumenJugador">cargarEscenaResumenJugador</a></li><li><a href="global.html#cesta">cesta</a></li><li><a href="global.html#confirmarCompra">confirmarCompra</a></li><li><a href="global.html#ejecutarDueloSecuencial">ejecutarDueloSecuencial</a></li><li><a href="global.html#enemigosBatalla">enemigosBatalla</a></li><li><a href="global.html#gestionarCesta">gestionarCesta</a></li><li><a href="global.html#groupBy">groupBy</a></li><li><a href="global.html#indiceCombate">indiceCombate</a></li><li><a href="global.html#jugador">jugador</a></li><li><a href="global.html#mercado">mercado</a></li><li><a href="global.html#mostrarCalificacion">mostrarCalificacion</a></li><li><a href="global.html#mostrarRanking">mostrarRanking</a></li><li><a href="global.html#mostrarRankingHistorico">mostrarRankingHistorico</a></li><li><a href="global.html#obtenerImagenEnemigo">obtenerImagenEnemigo</a></li><li><a href="global.html#obtenerRarezaAleatoria">obtenerRarezaAleatoria</a></li><li><a href="global.html#oroGanadoEnBatallas">oroGanadoEnBatallas</a></li><li><a href="global.html#refrescarInventarioTemporal">refrescarInventarioTemporal</a></li><li><a href="global.html#refrescarInventarioVisual">refrescarInventarioVisual</a></li><li><a href="global.html#showScene">showScene</a></li><li><a href="global.html#validarYCrearJugador">validarYCrearJugador</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Enemigo.html">Enemigo</a></li><li><a href="JefeFinal.html">JefeFinal</a></li><li><a href="Jugador.html">Jugador</a></li><li><a href="Producto.html">Producto</a></li></ul><h3>Global</h3><ul><li><a href="global.html#EUR">EUR</a></li><li><a href="global.html#REGEX_NOMBRE">REGEX_NOMBRE</a></li><li><a href="global.html#activarCascadaMonedas">activarCascadaMonedas</a></li><li><a href="global.html#actualizarMonederoVisual">actualizarMonederoVisual</a></li><li><a href="global.html#agruparPorNivel">agruparPorNivel</a></li><li><a href="global.html#aplicarDescuentoPorRareza">aplicarDescuentoPorRareza</a></li><li><a href="global.html#batalla">batalla</a></li><li><a href="global.html#buscarProducto">buscarProducto</a></li><li><a href="global.html#cargarEscena4">cargarEscena4</a></li><li><a href="global.html#cargarEscenaEnemigos">cargarEscenaEnemigos</a></li><li><a href="global.html#cargarEscenaMercado">cargarEscenaMercado</a></li><li><a href="global.html#cargarEscenaResumenJugador">cargarEscenaResumenJugador</a></li><li><a href="global.html#cesta">cesta</a></li><li><a href="global.html#confirmarCompra">confirmarCompra</a></li><li><a href="global.html#dineroAntesDeBatallas">dineroAntesDeBatallas</a></li><li><a href="global.html#ejecutarDueloSecuencial">ejecutarDueloSecuencial</a></li><li><a href="global.html#enemigosBatalla">enemigosBatalla</a></li><li><a href="global.html#gestionarCesta">gestionarCesta</a></li><li><a href="global.html#groupBy">groupBy</a></li><li><a href="global.html#indiceCombate">indiceCombate</a></li><li><a href="global.html#jugador">jugador</a></li><li><a href="global.html#mercado">mercado</a></li><li><a href="global.html#mostrarCalificacion">mostrarCalificacion</a></li><li><a href="global.html#mostrarRanking">mostrarRanking</a></li><li><a href="global.html#mostrarRankingHistorico">mostrarRankingHistorico</a></li><li><a href="global.html#obtenerImagenEnemigo">obtenerImagenEnemigo</a></li><li><a href="global.html#obtenerRarezaAleatoria">obtenerRarezaAleatoria</a></li><li><a href="global.html#refrescarInventarioTemporal">refrescarInventarioTemporal</a></li><li><a href="global.html#refrescarInventarioVisual">refrescarInventarioVisual</a></li><li><a href="global.html#showScene">showScene</a></li><li><a href="global.html#validarYCrearJugador">validarYCrearJugador</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Jan 14 2026 00:24:21 GMT+0100 (hora estándar de Europa central)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Wed Jan 14 2026 12:28:17 GMT+0100 (hora estándar de Europa central)
 </footer>
 
 <script> prettyPrint(); </script>
