@@ -18,7 +18,11 @@ let enemigosBatalla = [];
 /** @type {number} Índice del enemigo actual contra el que se está luchando. */
 let indiceCombate = 0;
 
-
+/**
+ * Almacena la cantidad de dinero que tenía el jugador justo antes de comenzar la secuencia de combates.
+ * Se utiliza para comparar y calcular el oro total ganado.
+ * @type {number}
+ */
 let dineroAntesDeBatallas = 0;
 
 const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
