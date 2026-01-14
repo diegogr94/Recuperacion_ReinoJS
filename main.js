@@ -239,9 +239,6 @@ function cargarEscenaMercado() {
 
         const rutaImagen = objeto.imagen;
 
-        const precioFormateado = (objeto.precio / 100).toFixed(2).replace('.', ',') + "€";
-
-
         const precioNormal = objeto.precio;
 
         tarjeta.innerHTML =
@@ -685,6 +682,5 @@ function mostrarRankingHistorico() {
  */
 function actualizarMonederoVisual() {
     const dineroAMostrar = jugador.dinero
-    const dineroMostrarEuros = (jugador.dinero / 100).toFixed(2);
     document.getElementById("dineroSaco").textContent = dineroAMostrar;
 }
