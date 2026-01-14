@@ -18,8 +18,8 @@ let enemigosBatalla = [];
 /** @type {number} Índice del enemigo actual contra el que se está luchando. */
 let indiceCombate = 0;
 
-/** @type {number}  Acumulador de la cantidad total de oro ganado únicamente en las batallas. */
-let oroGanadoEnBatallas = 0;
+
+let dineroAntesDeBatallas = 0;
 
 const ERROR_NOMBRE = "Mayúscula y máx 20 letras.";
 const ERROR_EXCESO = "La suma total pasa de 110.";
@@ -399,7 +399,9 @@ function obtenerImagenEnemigo(nombre) {
  */
 function cargarEscenaEnemigos() {
 
-    oroGanadoEnBatallas = 0;
+    dineroAntesDeBatallas = jugador.dinero;
+
+  
 
     const contenedor = document.getElementById('contenedor-enemigos');
 
@@ -525,7 +527,7 @@ function ejecutarDueloSecuencial() {
             botinMonedas = 10;
         }
         jugador.dinero += botinMonedas;
-        oroGanadoEnBatallas += botinMonedas;
+        
 
 
         let puntosGanados = 100 + rivalActual.ataque;
@@ -557,14 +559,14 @@ function ejecutarDueloSecuencial() {
 
     botonProximo.onclick = () => {
         if (!combateFinalizadoOk) {
-            mostrarCalificacion(false);
+            mostrarCalificacion();
         } else if (indiceCombate < enemigosBatalla.length - 1) {
             indiceCombate++;
             botonProximo.classList.add('oculto');
             ejecutarDueloSecuencial();
         } else {
 
-            mostrarCalificacion(true);
+            mostrarCalificacion();
         }
     };
 }
@@ -573,16 +575,24 @@ function ejecutarDueloSecuencial() {
  * Calcula la calificación final (Pro/Rookie) y guarda el resultado en localStorage.
  * Muestra la escena con el diploma final.
  */
-function mostrarCalificacion(esVictoriaTotal) {
+function mostrarCalificacion() {
 
 var puntosFinalesTotales = 0;
 
-    if (esVictoriaTotal) {
-        
+    if (jugador.vida > 0) {
+     
         puntosFinalesTotales = jugador.puntos + jugador.dinero;
-    } else {
+      
+        if (puntosFinalesTotales >= 300) {
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        }
+    } 
+    else {
         
-        puntosFinalesTotales = jugador.puntos + oroGanadoEnBatallas;
+        let soloBotin = Math.max(0, jugador.dinero - dineroAntesDeBatallas);
+       
+        puntosFinalesTotales = jugador.puntos + soloBotin;
+        
     }
 
     
