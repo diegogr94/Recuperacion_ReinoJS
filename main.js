@@ -327,7 +327,7 @@ setTimeout(() => {
     }
 
 
-    document.getElementById('oro-disponible').innerText = jugador.dinero;
+    
 
     actualizarMonederoVisual();
 

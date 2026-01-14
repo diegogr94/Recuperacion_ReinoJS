@@ -9,7 +9,7 @@
 
     --tamaño-imagen-jugador: 150px;
     --tamaño-retrato-batalla: 150px;
-    --tamaño-img-producto: 120px;
+    --tamaño-img-producto: 100px;
     --tamaño-img-enemigo: 150px;
 
     --tamaño-celda-inventario: 55px;
@@ -202,7 +202,7 @@ main {
     overflow-y: auto !important;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    gap: 15px;
     padding: 20px;
 }
 
@@ -210,7 +210,7 @@ main {
     background-color: var(--primaryColor);
     border: 2px solid var(--textColor);
     border-radius: 15px;
-    padding: 15px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
