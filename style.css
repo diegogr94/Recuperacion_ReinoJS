@@ -662,6 +662,195 @@ main {
 }
 
 
+.secreto{
+    position:fixed;
+  width: 100px;
+  height: 100px;
+  right: 2vw;
+  bottom:-11vh;
+
+  border: 2px solid black;
+  background: rgb(255, 255, 255);
+  z-index:1000;
+}
+
+.secreto:hover{
+bottom: 0.5vh ;
+transition:
+     2s ;
+}
+
+
+
+
+
+
+
+
+
+.estrella1 {
+    position: fixed;
+  height: 35px;
+  width: 35px;
+  top:1vh;
+  right:14vw;
+  margin-left: 0px;
+  
+
+  
+  animation: estrellaMovimiento 2s linear infinite;
+  
+  background: #e5ff00;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+
+@keyframes estrellaMovimiento {
+  from{
+     transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+
+  }
+}
+
+
+
+.estrella2 {
+    position: fixed;
+    top:1vh;
+  right:11vw;
+  height: 35px;
+  width: 35px;
+  margin-left: 0px;
+  
+
+  
+  animation: estrellaMovimiento 2s linear infinite;
+  
+  background: #e5ff00;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+
+@keyframes estrellaMovimiento {
+  from{
+     transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+
+  }
+}
+
+
+
+.estrella3 {
+    position: fixed;
+    top:1vh;
+  right:8vw;
+  height: 35px;
+  width: 35px;
+  margin-left: 0px;
+  
+
+  
+  animation: estrellaMovimiento 2s linear infinite;
+  
+  background: #e5ff00;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+
+@keyframes estrellaMovimiento {
+  from{
+     transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+
+  }
+}
+
+
+
+.estrella4 {
+    position: fixed;
+    top:1vh;
+  right:5vw;
+  height: 35px;
+  width: 35px;
+  margin-left: 0px;
+  
+
+  
+  animation: estrellaMovimiento 2s linear infinite;
+  
+  background: #e5ff00;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+
+@keyframes estrellaMovimiento {
+  from{
+     transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+
+  }
+}
+
+
+
+.estrella5 {
+    position: fixed;
+    top:1vh;
+  right:2vw;
+  height: 35px;
+  width: 35px;
+  margin-left: 0px;
+  
+
+  
+  animation: estrellaMovimiento 2s linear infinite;
+  
+  background: #e5ff00;
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+
+@keyframes estrellaMovimiento {
+  from{
+     transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(360deg);
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media screen and (max-width: 720px) {
     :root {
         
