@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir Producto - Recuperación</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div style="max-width: 500px; margin: 50px auto; padding: 20px; border: 2px solid #ccc; background-color: #fff; color: #000;">
+        <h2 style="text-align: center;">Crear Nuevo Producto</h2>
+        <form id="formProducto">
+            <label>Nombre:</label><br>
+            <input type="text" id="nombre" required style="width: 100%; margin-bottom: 10px;"><br>
+            
+            <label>Precio:</label><br>
+            <input type="number" id="precio" required style="width: 100%; margin-bottom: 10px;" min="0"><br>
+            
+            <label>Rareza:</label><br>
+            <select id="rareza" style="width: 100%; margin-bottom: 10px;">
+                <option value="común">Común</option>
+                <option value="raro">Raro</option>
+                <option value="épico">Épico</option>
+            </select><br>
+            
+            <label>Tipo:</label><br>
+            <select id="tipo" style="width: 100%; margin-bottom: 10px;">
+                <option value="arma">Arma</option>
+                <option value="armadura">Armadura</option>
+                <option value="consumible">Consumible</option>
+            </select><br>
+            
+            <label>Estadística (ej: ataque, defensa):</label><br>
+            <select id="statKey" style="width: 100%; margin-bottom: 10px;">
+                <option value="ataque">Ataque</option>
+                <option value="defensa">Defensa</option>
+                <option value="curacion">Curación</option>
+            </select>
+            <input type="number" id="statVal" placeholder="Valor estadística" required style="width: 100%; margin-bottom: 10px;" min="0"><br>
+            
+            <label>Ruta Imagen:</label><br>
+            <input type="text" id="imagen" value="./imagenes/espadaCorta.jpg" style="width: 100%; margin-top: 10px;"><br><br>
+            
+            <div style="text-align: center;">
+                <button type="submit">Guardar Objeto</button>
+                <button type="button" onclick="window.location.href='index.html'">Ir al Juego</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('formProducto').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const stats = {};
+            stats[document.getElementById('statKey').value] = parseInt(document.getElementById('statVal').value);
+
+            const nuevoProducto = {
+                nombre: document.getElementById('nombre').value,
+                precio: parseFloat(document.getElementById('precio').value),
+                rareza: document.getElementById('rareza').value,
+                tipo: document.getElementById('tipo').value,
+                stats: stats,
+                imagen: document.getElementById('imagen').value
+            };
+
+            const CLAVE = "productos_diego";
+            
+            let productos = JSON.parse(localStorage.getItem(CLAVE)) || [];
+            productos.push(nuevoProducto);
+            localStorage.setItem(CLAVE, JSON.stringify(productos));
+
+            alert('¡Objeto guardado correctamente!');
+            e.target.reset();
+            document.getElementById('imagen').value = "./imagenes/espadaCorta.jpg";
+        });
+    </script>
+</body>
+</html>

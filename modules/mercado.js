@@ -1,23 +1,21 @@
 import { Producto } from './producto.js';
 
-
 /**
  * Catálogo de productos disponibles en el mercado.
  * @type {Array<Producto>}
  */
-export const mercado = [
-    new Producto('Espada corta', 80, 'común', 'arma', { ataque: 8 }, './imagenes/espadaCorta.jpg'),
-    new Producto('Arco de caza', 70, 'común', 'arma', { ataque: 7 }, './imagenes/arcoCaza.jpg'),
-    new Producto('Armadura de cuero', 60, 'común', 'armadura', { defensa: 6 }, './imagenes/armaduraCuero.jpg'),
-    new Producto('Poción pequeña', 30, 'común', 'consumible', { curacion: 20 }, './imagenes/pocionPeque.jpg'),
-    new Producto('Espada rúnica', 180, 'raro', 'arma', { ataque: 18 }, './imagenes/espadaRunica.jpg'),
-    new Producto('Escudo de roble', 140, 'raro', 'armadura', { defensa: 14 }, './imagenes/escudoRoble.jpg'),
-    new Producto('Poción grande', 80, 'raro', 'consumible', { curacion: 60 }, './imagenes/pocionGrande.jpg'),
-    new Producto('Mandoble épico', 350, 'épico', 'arma', { ataque: 32 }, './imagenes/mandobleEpico.jpg'),
-    new Producto('Placas dracónicas', 300, 'épico', 'armadura', { defensa: 28 }, './imagenes/placasDraconicas.jpg'),
-    new Producto('Elixir legendario', 120, 'épico', 'consumible', { curacion: 150 }, './imagenes/elixirLegendario.jpg'),
-];
+export let mercado = [];
 
+const dataGuardada = localStorage.getItem("productos_diego");
+
+if (dataGuardada) {
+    const productosPlanos = JSON.parse(dataGuardada);
+    if (Array.isArray(productosPlanos)) {
+        mercado = productosPlanos.map(p => 
+            new Producto(p.nombre, p.precio, p.rareza, p.tipo, p.stats, p.imagen)
+        );
+    }
+}
 
 /**
  * Selecciona aleatoriamente una rareza de la lista disponible.
@@ -28,7 +26,6 @@ export function obtenerRarezaAleatoria() {
     const indice = Math.floor(Math.random() * rarezas.length);
     return rarezas[indice];
 }
-
 
 /**
  * Aplica un porcentaje de descuento a todos los productos de una rareza específica.
@@ -44,10 +41,8 @@ export function aplicarDescuentoPorRareza(rarezaRecibida, porcentaje) {
         var producto = mercado[i];
 
         if (producto.rareza === rarezaRecibida) {
-            
             producto.aplicarDescuento(porcentaje);
         }
-        
         
         productosConDescuento.push(producto);
     }
