@@ -40,14 +40,16 @@ export class Producto {
      * @returns {string} Cadena con nombre, rareza, precio y bonus aplicables.
      */
     mostrarProducto() {
-
     let bonusTexto = "";
 
-    if (this.bonus.ataque)  bonusTexto += "Ataque +" + this.bonus.ataque + " ";
-    if (this.bonus.defensa) bonusTexto += "Defensa +" + this.bonus.defensa + " ";
-    if (this.bonus.vida)    bonusTexto += "Vida +" + this.bonus.vida + " ";
-
-    if (this.bonus.curacion) bonusTexto += "Curación +" + this.bonus.curacion + " ";
+    if (this.bonus && typeof this.bonus === 'object') {
+        if (this.bonus.ataque)   bonusTexto += "Ataque +" + this.bonus.ataque + " ";
+        if (this.bonus.defensa)  bonusTexto += "Defensa +" + this.bonus.defensa + " ";
+        if (this.bonus.vida)     bonusTexto += "Vida +" + this.bonus.vida + " ";
+        if (this.bonus.curacion) bonusTexto += "Curación +" + this.bonus.curacion + " ";
+    } else if (this.bonus) {
+        bonusTexto = "Bonus: " + this.bonus;
+    }
 
     return this.nombre + " [" + this.rareza + "] " + "<br>Precio: " + this.precio + "<br>  " + bonusTexto;
 }

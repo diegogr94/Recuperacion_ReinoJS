@@ -3,43 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Añadir Producto - Recuperación</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 </head>
 <body>
-    <div style="max-width: 500px; margin: 50px auto; padding: 20px; border: 2px solid #ccc; background-color: #fff; color: #000;">
+    <div style="max-width: 500px; margin: 50px auto;">
         <h2 style="text-align: center;">Crear Nuevo Producto</h2>
         <form id="formProducto">
-            <label>Nombre:</label><br>
-            <input type="text" id="nombre" required style="width: 100%; margin-bottom: 10px;"><br>
-            
-            <label>Precio:</label><br>
-            <input type="number" id="precio" required style="width: 100%; margin-bottom: 10px;" min="0"><br>
-            
-            <label>Rareza:</label><br>
-            <select id="rareza" style="width: 100%; margin-bottom: 10px;">
+            <label for="nombre">Nombre:</label>
+            <input
+                type="text"
+                id="nombre"
+                required
+                minlength="3"
+                pattern="[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+( [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*"
+                title="Debe empezar por mayúscula, el resto en minúsculas. Puede tener varias palabras."
+            ><br>
+
+            <label for="precio">Precio:</label>
+            <input
+                type="number"
+                id="precio"
+                required
+                min="1"
+                max="98"
+                step="1"
+                title="Solo enteros positivos menores de 99"
+            ><br>
+
+            <label for="rareza">Rareza:</label>
+            <select id="rareza">
                 <option value="común">Común</option>
                 <option value="raro">Raro</option>
                 <option value="épico">Épico</option>
             </select><br>
-            
-            <label>Tipo:</label><br>
-            <select id="tipo" style="width: 100%; margin-bottom: 10px;">
-                <option value="arma">Arma</option>
+
+            <label for="tipo">Tipo:</label>
+            <select id="tipo">
                 <option value="armadura">Armadura</option>
+                <option value="arma">Arma</option>
                 <option value="consumible">Consumible</option>
             </select><br>
-            
-            <label>Estadística (ej: ataque, defensa):</label><br>
-            <select id="statKey" style="width: 100%; margin-bottom: 10px;">
-                <option value="ataque">Ataque</option>
-                <option value="defensa">Defensa</option>
-                <option value="curacion">Curación</option>
-            </select>
-            <input type="number" id="statVal" placeholder="Valor estadística" required style="width: 100%; margin-bottom: 10px;" min="0"><br>
-            
-            <label>Ruta Imagen:</label><br>
-            <input type="text" id="imagen" value="./imagenes/espadaCorta.jpg" style="width: 100%; margin-top: 10px;"><br><br>
-            
+
+            <label for="bonus">Bonus:</label>
+            <input
+                type="text"
+                id="bonus"
+                required
+                pattern="\+[0-9]{1,3}"
+                title="Debe empezar por + seguido de 1 a 3 dígitos. Ej: +12, +9, +100"
+                placeholder="+12"
+            ><br>
+
+            <label for="imagen">Imagen:</label>
+            <input type="file" id="imagen" accept="image/*"><br><br>
+
             <div style="text-align: center;">
                 <button type="submit">Guardar Objeto</button>
                 <button type="button" onclick="window.location.href='index.html'">Ir al Juego</button>
@@ -50,28 +67,28 @@
     <script>
         document.getElementById('formProducto').addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            const stats = {};
-            stats[document.getElementById('statKey').value] = parseInt(document.getElementById('statVal').value);
+
+            const imagenInput = document.getElementById('imagen');
+            const nombreArchivo = imagenInput.files && imagenInput.files[0]
+                ? './imagenes/' + imagenInput.files[0].name
+                : null;
 
             const nuevoProducto = {
                 nombre: document.getElementById('nombre').value,
-                precio: parseFloat(document.getElementById('precio').value),
+                precio: parseInt(document.getElementById('precio').value),
                 rareza: document.getElementById('rareza').value,
                 tipo: document.getElementById('tipo').value,
-                stats: stats,
-                imagen: document.getElementById('imagen').value
+                bonus: document.getElementById('bonus').value,
+                imagen: nombreArchivo
             };
 
             const CLAVE = "productos_diego";
-            
             let productos = JSON.parse(localStorage.getItem(CLAVE)) || [];
             productos.push(nuevoProducto);
             localStorage.setItem(CLAVE, JSON.stringify(productos));
 
             alert('¡Objeto guardado correctamente!');
             e.target.reset();
-            document.getElementById('imagen').value = "./imagenes/espadaCorta.jpg";
         });
     </script>
 </body>

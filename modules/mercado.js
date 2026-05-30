@@ -12,7 +12,7 @@ if (dataGuardada) {
     const productosPlanos = JSON.parse(dataGuardada);
     if (Array.isArray(productosPlanos)) {
         mercado = productosPlanos.map(p => 
-            new Producto(p.nombre, p.precio, p.rareza, p.tipo, p.stats, p.imagen)
+            new Producto(p.nombre, p.precio, p.rareza, p.tipo, p.bonus, p.imagen)
         );
     }
 }
